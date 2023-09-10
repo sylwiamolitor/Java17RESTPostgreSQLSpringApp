@@ -4,11 +4,11 @@ import com.example.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/v1/student")
+@CrossOrigin("*")
 public class StudentController {
 
     private final StudentService studentService;
