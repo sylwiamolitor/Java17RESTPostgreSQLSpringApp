@@ -1,6 +1,7 @@
 package com.example;
 
 import com.example.model.Student;
+import com.example.model.StudentDTO;
 import com.example.repo.StudentRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,19 +11,33 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
 
     private final StudentRepo studentRepo;
+    private final StudentDTOMapper studentDTOMapper;
 
     @Autowired
-    public StudentService(StudentRepo studentRepo) {
+    public StudentService(StudentRepo studentRepo, StudentDTOMapper studentDTOMapper) {
         this.studentRepo = studentRepo;
+        this.studentDTOMapper = studentDTOMapper;
     }
 
-    public List<Student> getStudents() {
-        return studentRepo.findAll();
+    public List<StudentDTO> getStudents() {
+        return studentRepo.findAll()
+                .stream()
+                .map(studentDTOMapper)
+                .collect(Collectors.toList());
+    }
+
+    public StudentDTO getStudentByEmail(String email) {
+        return studentRepo.findStudentByEmail(email)
+                .stream()
+                .map(studentDTOMapper)
+                .findFirst()
+                .orElseThrow();
     }
 
     public void addNewStudent(Student student) {

@@ -1,6 +1,7 @@
 package com.example;
 
 import com.example.model.Student;
+import com.example.model.StudentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +25,13 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> getStudents() {
+    public List<StudentDTO> getStudents() {
         return studentService.getStudents();
+    }
+
+    @GetMapping(path = "{email}")
+    public StudentDTO getStudentByEmail(@PathVariable("email") String email) {
+        return studentService.getStudentByEmail(email);
     }
 
     @DeleteMapping(path = "{studentId}")
@@ -33,7 +39,7 @@ public class StudentController {
         studentService.deleteStudent(id);
     }
 
-    @PutMapping(path = "{studentId}") //dodac inne  argi
+    @PutMapping(path = "{studentId}")
     public void updateStudent(@PathVariable("studentId") Long studentId,
                               @RequestParam(required = false) String firstName,
                               @RequestParam(required = false) String lastName,
