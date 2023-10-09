@@ -58,17 +58,22 @@ public class StudentService {
 
     @Transactional
     public void updateStudent(Long id, String firstName, String lastName, String dateOfBirth, String email) {
-        Student student = studentRepo.findById(id).orElseThrow(() -> new IllegalStateException("student with id" + id + "does not exist"));
+        Student student = studentRepo.findById(id).orElseThrow(() -> new IllegalStateException("student with id " + id + " does not exist"));
+        boolean changed = false;
         if (firstName != null && !firstName.isEmpty() && !Objects.equals(student.getFirstName(), firstName)) {
             student.setFirstName(firstName);
+            changed = true;
         }
         if (lastName != null && !lastName.isEmpty() && !Objects.equals(student.getLastName(), lastName)) {
             student.setLastName(lastName);
+            changed = true;
         }
         if (dateOfBirth != null && !dateOfBirth.isEmpty() && DateValidator.isValid(dateOfBirth)) {
             LocalDate date = LocalDate.parse(dateOfBirth);
-            if (!Objects.equals(student.getDateOfBirth(), date))
+            if (!Objects.equals(student.getDateOfBirth(), date)) {
                 student.setDateOfBirth(date);
+                changed = true;
+            }
         }
 
         if (email != null && !email.isEmpty() && !Objects.equals(student.getEmail(), email)) {
@@ -76,6 +81,9 @@ public class StudentService {
             if (studentOptional.isPresent())
                 throw new IllegalStateException("email taken");
             student.setEmail(email);
+            changed = true;
         }
+        if (changed)
+            studentRepo.save(student);
     }
 }
