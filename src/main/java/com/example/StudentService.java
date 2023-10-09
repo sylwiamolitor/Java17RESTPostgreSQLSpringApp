@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,6 +46,7 @@ public class StudentService {
         if (optionalStudent.isPresent()) {
             throw new IllegalStateException("email taken");
         }
+        checkIfEmailValid(student.getEmail());
         studentRepo.save(student);
     }
 
@@ -80,10 +82,20 @@ public class StudentService {
             Optional<Student> studentOptional = studentRepo.findStudentByEmail(email);
             if (studentOptional.isPresent())
                 throw new IllegalStateException("email taken");
+            checkIfEmailValid(email);
             student.setEmail(email);
             changed = true;
         }
         if (changed)
             studentRepo.save(student);
+    }
+
+    private void checkIfEmailValid(String email) {
+        String regex = "^(.+)@(.+)$";
+
+        Pattern pattern = Pattern.compile(regex);
+        if (!pattern.matcher(email).matches()) {
+            throw new IllegalStateException("Email not valid");
+        }
     }
 }
