@@ -1,4 +1,4 @@
-# Spring and Postgres application
+# Spring and PostgreSQL application
 Spring application, which uses DTOs and PostgreSQL database.
 
 ## Table of Contents
