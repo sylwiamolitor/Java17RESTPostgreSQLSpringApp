@@ -17,6 +17,7 @@
 		<java.version>17</java.version>
 		<!-- The main class to start by executing java -jar -->
 		<start-class>com.example.DemoApplication</start-class>
+		<springdoc-openapi.version>2.2.0</springdoc-openapi.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -67,6 +68,11 @@
 		<dependency>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc-openapi.version}</version>
 		</dependency>
 
 	</dependencies>
