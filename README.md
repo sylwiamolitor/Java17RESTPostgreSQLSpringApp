@@ -13,11 +13,10 @@ Spring application, which uses DTOs and PostgreSQL database.
 
 
 ## General Information
-This project was created to test the capabilities of Spring and PostgreSQL - especially JPA.
+This project was created to test the capabilities of Spring and PostgreSQL - especially JPA. OpenAPI allows to describe, consume and visualize RESTful web services.
 
 ## Technologies Used
-Java, Spring, PostgreSQL, Docker.
-
+Java, Spring, PostgreSQL, Docker, OpenAPI.
 
 ## Features
 - Adding student,
@@ -31,6 +30,7 @@ Java, Spring, PostgreSQL, Docker.
 
 ## Screenshots
 ![img_2.png](img_2.png)
+![img_3.png](img_3.png) OpenAPI
 
 ## Setup
 Start the application.
@@ -38,15 +38,16 @@ Operating port is 8090.
 To start the application use command `docker compose up`. PgAdmin must be up - database credentials are declared in docker-compose.yml - `POSTGRES_USER=postgres POSTGRES_PASSWORD=password POSTGRES_DB=testdatabase`, 
 
 ## Usage
-Tool Postman is recommended. The available options are:
+Tool Postman or OpenAPI are recommended. The available options are:
 - adding student ![img.png](img.png)
 - deleting student - DELETE http://localhost:8090/api/v1/student/{{studentId}}
 - getting all students http://localhost:8090/api/v1/student
 - updating student ![img_1.png](img_1.png)
 - getting one student by email - GET http://localhost:8090/api/v1/student/{{email}}
-
+OpenAPI option operates on different port:
+- http://localhost/
 ## Project Status
-In progress.
+Complete.
 
 ## Room for Improvement
 To do:
