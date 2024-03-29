@@ -18,6 +18,7 @@ public class StudentConfig {
                     "Sylwia",
                     "Test",
                     "testEmail@o2.pl",
+                    "Liberia",
                     LocalDate.EPOCH);
             studentRepo.save(newStudent);
         };

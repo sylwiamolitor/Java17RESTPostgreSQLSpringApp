@@ -1,8 +1,8 @@
 package com.example;
 
-import com.example.model.Student;
-import com.example.model.StudentDTO;
+import com.example.model.*;
 import com.example.repo.StudentRepo;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -29,6 +31,7 @@ public class StudentServiceTest {
             "Ewa",
             "Test",
             "testEwa@o2.pl",
+            "Czechia",
             LocalDate.EPOCH);
 
     @BeforeEach
@@ -52,7 +55,7 @@ public class StudentServiceTest {
 
         StudentDTO actual = studentService.getStudentByEmail(email);
 
-        assertThat(actual).isEqualTo(expected);
+        assertThat(expected).isEqualTo(actual);
     }
 
     @Test
@@ -62,6 +65,7 @@ public class StudentServiceTest {
                 "Thomas",
                 "Test",
                 email,
+                "Poland",
                 LocalDate.EPOCH);
 
         when(studentRepo.findStudentByEmail(email)).thenReturn(Optional.empty());
@@ -90,12 +94,43 @@ public class StudentServiceTest {
         String lastName = "Testing";
         String dateOfBirth = "1999-03-01";
         String email = "testN2@o2.pl";
+        String country = "Germany";
         when(studentRepo.findById(id)).thenReturn(Optional.of(basicStudent));
 
-        studentService.updateStudent(id, firstName, lastName, dateOfBirth, email);
+        studentService.updateStudent(id, firstName, lastName, dateOfBirth, email, country);
 
         verify(studentRepo).findById(id);
         verify(studentRepo).findStudentByEmail(email);
         verify(studentRepo).save(basicStudent);
     }
+
+    @Test
+    void getCountryByStudentIdTest() {
+        Long studentId = 3L;
+        String expected = "Czechia";
+        when(studentRepo.findStudentById(studentId)).thenReturn(Optional.of(basicStudent));
+
+        String actual = studentService.getCountryByStudentId(studentId);
+
+        assertThat(expected).isEqualTo(actual);
+        verify(studentRepo).findStudentById(studentId);
+    }
+
+    @Test
+    void mapApiToRegionTest() {
+        NameDTO italyDTO = new NameDTO("Italy", "Long name of Italy");
+        NameDTO swedenDTO = new NameDTO("Sweden", "Long name of Sweden");
+        ApiDTO[] apiObj = new ApiDTO[2];
+        apiObj[0] = new ApiDTO(italyDTO, "italySubregion", "italyRegion");
+        apiObj[1] = new ApiDTO(swedenDTO, "swedenSubregion", "swedenRegion");
+        String country = "Italy";
+
+        Collection<RegionAndSubregionDTO> expected = new ArrayList<>();
+        expected.add(new RegionAndSubregionDTO("italyRegion", "italySubregion"));
+
+        Collection<RegionAndSubregionDTO> actual = studentService.mapApiToRegion(apiObj, country);
+
+        assertThat(expected).isEqualTo(actual);
+    }
+
 }

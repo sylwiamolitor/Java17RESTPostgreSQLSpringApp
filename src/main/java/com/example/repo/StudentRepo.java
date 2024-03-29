@@ -16,4 +16,8 @@ public interface StudentRepo extends JpaRepository<Student, Long> {
     @Query("SELECT s FROM Student s WHERE s.email=?1")
     @Operation(summary = "Query for finding students by his/her email address")
     Optional<Student> findStudentByEmail(String email);
+
+    @Query("SELECT s FROM Student s WHERE s.id=?1")
+    @Operation(summary = "Query for finding student by his/her id")
+    Optional<Student> findStudentById(Long studentId);
 }

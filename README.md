@@ -25,12 +25,12 @@ Java, Spring, PostgreSQL, Docker, OpenAPI.
 - updating student,
 - getting one student by email,
 - validation of dates,
-- checking if the email is correct.
+- checking if the email is correct,
+- getting region and subregion from internet API based on student's country.
 
 
 ## Screenshots
-![img_2.png](img_2.png)
-![img_3.png](img_3.png) OpenAPI
+![img_1.png](img_1.png)
 
 ## Setup
 Start the application.
@@ -39,12 +39,13 @@ To start the application use command `docker compose up`. PgAdmin must be up - d
 
 ## Usage
 Tool Postman or OpenAPI are recommended. The available options are:
-- adding student ![img.png](img.png)
+- adding student
 - deleting student - DELETE http://localhost:8090/api/v1/student/{{studentId}}
 - getting all students http://localhost:8090/api/v1/student
-- updating student ![img_1.png](img_1.png)
+- updating student
 - getting one student by email - GET http://localhost:8090/api/v1/student/{{email}}
-OpenAPI option operates on different port:
+- getting region and subregion from outside API based on student's country GET http://localhost:8090/api/v1/student/regionsByCountry/{studentId}
+- OpenAPI option operates on different port:
 - http://localhost/
 ## Project Status
 Complete.

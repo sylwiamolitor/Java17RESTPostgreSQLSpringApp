@@ -1,5 +1,7 @@
 package com.example;
 
+import com.example.model.ApiDTO;
+import com.example.model.RegionAndSubregionDTO;
 import com.example.model.Student;
 import com.example.model.StudentDTO;
 import com.example.repo.StudentRepo;
@@ -8,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -40,6 +40,20 @@ public class StudentService {
                 .findFirst()
                 .orElseThrow();
     }
+    public String getCountryByStudentId(Long studentId) {
+        return studentRepo.findStudentById(studentId)
+                .stream()
+                .map(Student::getCountry)
+                .findFirst()
+                .orElseThrow();
+    }
+
+    public Collection<RegionAndSubregionDTO> mapApiToRegion(ApiDTO[] apiObj, String country){
+       return Arrays.stream(apiObj)
+                .filter(input -> input.name().common().equals(country))
+                .map(input -> new RegionAndSubregionDTO(input.region(), input.subregion()))
+                .collect(Collectors.toList());
+    }
 
     public void addNewStudent(Student student) {
         Optional<Student> optionalStudent = studentRepo.findStudentByEmail(student.getEmail());
@@ -59,7 +73,7 @@ public class StudentService {
     }
 
     @Transactional
-    public void updateStudent(Long id, String firstName, String lastName, String dateOfBirth, String email) {
+    public void updateStudent(Long id, String firstName, String lastName, String dateOfBirth, String email, String country) {
         Student student = studentRepo.findById(id).orElseThrow(() -> new IllegalStateException("student with id " + id + " does not exist"));
         boolean changed = false;
         if (firstName != null && !firstName.isEmpty() && !Objects.equals(student.getFirstName(), firstName)) {
@@ -77,7 +91,10 @@ public class StudentService {
                 changed = true;
             }
         }
-
+        if (country != null && !country.isEmpty() && !Objects.equals(student.getCountry(), country)) {
+            student.setCountry(country);
+            changed = true;
+        }
         if (email != null && !email.isEmpty() && !Objects.equals(student.getEmail(), email)) {
             Optional<Student> studentOptional = studentRepo.findStudentByEmail(email);
             if (studentOptional.isPresent())

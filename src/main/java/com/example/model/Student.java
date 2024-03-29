@@ -38,16 +38,21 @@ public class Student {
     @Column(name = "date_of_birth", nullable = false, columnDefinition = "DATE")
     private LocalDate dateOfBirth;
 
+    @Getter
+    @Column(name = "country", nullable = true, columnDefinition = "TEXT")
+    private String country;
+
     @Transient
     private Integer age;
 
     public Student() {
     }
 
-    public Student(String firstName, String lastName, String email, LocalDate dateOfBirth) {
+    public Student(String firstName, String lastName, String email, String country, LocalDate dateOfBirth) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.country = country;
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -66,6 +71,9 @@ public class Student {
     public void setEmail(String email) {
         this.email = email;
     }
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
@@ -78,6 +86,7 @@ public class Student {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", country='" + country + '\'' +
                 ", age=" + age +
                 '}';
     }

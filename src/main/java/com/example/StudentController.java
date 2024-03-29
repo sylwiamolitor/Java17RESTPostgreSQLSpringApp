@@ -1,12 +1,17 @@
 package com.example;
 
+import com.example.model.ApiDTO;
+import com.example.model.RegionAndSubregionDTO;
 import com.example.model.Student;
 import com.example.model.StudentDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -40,6 +45,12 @@ public class StudentController {
         return studentService.getStudentByEmail(email);
     }
 
+    @GetMapping(path = "id/{id}")
+    @Operation(summary = "Method for getting student's country by his/her id")
+    public Collection<String> getCountryById(@PathVariable("id") Long id) {
+        return Collections.singletonList(studentService.getCountryByStudentId(id));
+    }
+
     @DeleteMapping(path = "{studentId}")
     @Operation(summary = "Method for deleting student by his/her ID")
     public void deleteStudent(@PathVariable("studentId") Long id) {
@@ -52,7 +63,19 @@ public class StudentController {
                               @RequestParam(required = false) String firstName,
                               @RequestParam(required = false) String lastName,
                               @RequestParam(required = false) String dateOfBirth,
-                              @RequestParam(required = false) String email) {
-        studentService.updateStudent(studentId, firstName, lastName, dateOfBirth, email);
+                              @RequestParam(required = false) String email,
+                              @RequestParam(required = false) String country) {
+        studentService.updateStudent(studentId, firstName, lastName, dateOfBirth, email, country);
+    }
+
+    @GetMapping(path = "regionsByCountry/{studentId}")
+    @Operation(summary = "Method for getting students' regions")
+    public Collection<RegionAndSubregionDTO> getRegionsByStudentId(@PathVariable("studentId") Long studentId) {
+        String country = studentService.getCountryByStudentId(studentId);
+        String uri = "https://restcountries.com/v3.1/independent?status=true";
+        RestTemplate restTemplate = new RestTemplate();
+        ApiDTO[] apiObj = restTemplate.getForObject(uri, ApiDTO[].class);
+
+        return studentService.mapApiToRegion(apiObj, country);
     }
 }
