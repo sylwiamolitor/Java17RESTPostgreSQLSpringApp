@@ -1,5 +1,5 @@
 # Spring and PostgreSQL application
-Spring application, which uses DTOs and PostgreSQL database.
+Spring application, which uses REST, DTOs and PostgreSQL database.
 
 ## Table of Contents
 * [General Info](#general-information)
