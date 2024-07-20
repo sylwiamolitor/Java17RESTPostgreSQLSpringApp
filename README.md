@@ -13,10 +13,10 @@ Spring application, which uses REST, DTOs and PostgreSQL database.
 
 
 ## General Information
-This project was created to test the capabilities of Spring and PostgreSQL - especially JPA. OpenAPI allows to describe, consume and visualize RESTful web services.
+This project was created to test the capabilities of Spring, Spring Security and PostgreSQL - especially JPA. OpenAPI allows to describe, consume and visualize RESTful web services.
 
 ## Technologies Used
-Java, Spring, PostgreSQL, Docker, OpenAPI.
+Java, Spring, PostgreSQL, Docker, OpenAPI, Spring Security.
 
 ## Features
 - Adding student,
@@ -26,7 +26,9 @@ Java, Spring, PostgreSQL, Docker, OpenAPI.
 - getting one student by email,
 - validation of dates,
 - checking if the email is correct,
-- getting region and subregion from internet API based on student's country.
+- getting region and subregion from internet API based on student's country,
+- registering user,
+- authenticating user.
 
 
 ## Screenshots
@@ -35,8 +37,11 @@ Java, Spring, PostgreSQL, Docker, OpenAPI.
 ## Setup
 Start the application.
 Operating port is 8090.
-To start the application use command `docker compose up`. PgAdmin must be up - database credentials are declared in docker-compose.yml - `POSTGRES_USER=postgres POSTGRES_PASSWORD=password POSTGRES_DB=testdatabase`, 
-
+To start the application use command `docker compose up`. Database credentials are declared in docker-compose.yml - `POSTGRES_USER=postgres POSTGRES_PASSWORD=password POSTGRES_DB=testdatabase`. 
+A JWT token is needed to register user and authorize requests. Create JWT token for example at
+https://jwt.io/ and add it to header in `register` endpoint. ![img_3.png](img_3.png) JWT token has specific syntax - subject is email. ![img_4.png](img_4.png) Create user with correct email.
+![img_2.png](img_2.png)
+Created token will be used in requests or to authenticate user in `authenticate` endpoint.
 ## Usage
 Tool Postman or OpenAPI are recommended. The available options are:
 - adding student
@@ -51,7 +56,6 @@ Tool Postman or OpenAPI are recommended. The available options are:
 Complete.
 
 ## Room for Improvement
-To do:
-- Add more functionalities
+OpenAPI and dockerization of Spring Security.
 
 
