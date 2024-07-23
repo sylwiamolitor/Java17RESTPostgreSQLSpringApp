@@ -1,4 +1,4 @@
 package com.example.model;
 
-public record NameDTO (String common, String official){
+public record NameDTO(String common, String official) {
 }

@@ -1,11 +1,12 @@
 package com.example;
 
+import com.example.entity.Student;
 import com.example.model.ApiDTO;
 import com.example.model.RegionAndSubregionDTO;
-import com.example.model.Student;
 import com.example.model.StudentDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -26,6 +27,9 @@ public class StudentController {
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
+
+    @Autowired
+    public ModelMapper modelMapper;
 
     @PostMapping("/addStudent")
     @Operation(summary = "Method for adding students")

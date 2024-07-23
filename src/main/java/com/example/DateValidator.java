@@ -1,9 +1,7 @@
 package com.example;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.format.ResolverStyle;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class DateValidator {
     public static boolean isValid(final String date) {
@@ -11,14 +9,11 @@ public class DateValidator {
         boolean valid;
 
         try {
-            LocalDate.parse(date,
-                    DateTimeFormatter.ofPattern("uuuu-M-d")
-                            .withResolverStyle(ResolverStyle.STRICT)
-            );
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            formatter.parse(date);
             valid = true;
 
-        } catch (DateTimeParseException e) {
-            e.printStackTrace();
+        } catch (ParseException e) {
             valid = false;
         }
 

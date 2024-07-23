@@ -1,7 +1,7 @@
-package com.example.model;
+package com.example.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -10,8 +10,8 @@ import java.time.Period;
 @Table(name = "student", uniqueConstraints = {
         @UniqueConstraint(name = "student_email_unique", columnNames = "email")
 })
+@Data
 public class Student {
-    @Getter
     @Id
     @SequenceGenerator(name = "student_sequence",
             sequenceName = "student_sequence",
@@ -22,23 +22,18 @@ public class Student {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Getter
     @Column(name = "first_name", nullable = false, columnDefinition = "TEXT")
     private String firstName;
 
-    @Getter
     @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
     private String lastName;
 
-    @Getter
     @Column(name = "email", nullable = false, columnDefinition = "TEXT")
     private String email;
 
-    @Getter
     @Column(name = "date_of_birth", nullable = false, columnDefinition = "DATE")
     private LocalDate dateOfBirth;
 
-    @Getter
     @Column(name = "country", nullable = true, columnDefinition = "TEXT")
     private String country;
 
@@ -58,25 +53,6 @@ public class Student {
 
     public Integer getAge() {
         return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
     }
 
     @Override

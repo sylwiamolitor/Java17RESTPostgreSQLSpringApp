@@ -1,6 +1,6 @@
 package com.example;
 
-import com.example.model.Student;
+import com.example.entity.Student;
 import com.example.model.StudentDTO;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ public class StudentDTOMapper implements Function<Student, StudentDTO> {
                 student.getLastName(),
                 student.getEmail(),
                 student.getCountry(),
-                student.getAge());
+                student.getDateOfBirth());
     }
 }

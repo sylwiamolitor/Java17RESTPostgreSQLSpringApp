@@ -1,8 +1,11 @@
 package com.example;
 
-import com.example.model.*;
-import com.example.repo.StudentRepo;
-import org.checkerframework.checker.units.qual.A;
+import com.example.entity.Student;
+import com.example.model.ApiDTO;
+import com.example.model.NameDTO;
+import com.example.model.RegionAndSubregionDTO;
+import com.example.model.StudentDTO;
+import com.example.repository.StudentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +28,7 @@ public class StudentServiceTest {
     private StudentService studentService;
 
     @Mock
-    private StudentRepo studentRepo;
+    private StudentRepository studentRepository;
     private final StudentDTOMapper studentDTOMapper = new StudentDTOMapper();
     private final Student basicStudent = new Student(
             "Ewa",
@@ -36,20 +39,20 @@ public class StudentServiceTest {
 
     @BeforeEach
     void setUp() {
-        studentService = new StudentService(studentRepo, studentDTOMapper);
+        studentService = new StudentService(studentRepository, studentDTOMapper);
     }
 
     @Test
     void getAllStudentsTest() {
         studentService.getStudents();
 
-        verify(studentRepo).findAll();
+        verify(studentRepository).findAll();
     }
 
     @Test
     void canGetStudentTest() {
         String email = "testEwa@o2.pl";
-        when(studentRepo.findStudentByEmail(email)).thenReturn(Optional.of(basicStudent));
+        when(studentRepository.findByEmail(email)).thenReturn(Optional.of(basicStudent));
 
         StudentDTO expected = studentDTOMapper.apply(basicStudent);
 
@@ -68,11 +71,11 @@ public class StudentServiceTest {
                 "Poland",
                 LocalDate.EPOCH);
 
-        when(studentRepo.findStudentByEmail(email)).thenReturn(Optional.empty());
+        when(studentRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         studentService.addNewStudent(newStudent);
 
-        verify(studentRepo).save(newStudent);
+        verify(studentRepository).save(newStudent);
     }
 
     @Test
@@ -80,11 +83,11 @@ public class StudentServiceTest {
         long id = 2;
         boolean exists = true;
 
-        when(studentRepo.existsById(id)).thenReturn(exists);
+        when(studentRepository.existsById(id)).thenReturn(exists);
 
         studentService.deleteStudent(id);
 
-        verify(studentRepo).deleteById(id);
+        verify(studentRepository).deleteById(id);
     }
 
     @Test
@@ -95,25 +98,25 @@ public class StudentServiceTest {
         String dateOfBirth = "1999-03-01";
         String email = "testN2@o2.pl";
         String country = "Germany";
-        when(studentRepo.findById(id)).thenReturn(Optional.of(basicStudent));
+        when(studentRepository.findById(id)).thenReturn(Optional.of(basicStudent));
 
         studentService.updateStudent(id, firstName, lastName, dateOfBirth, email, country);
 
-        verify(studentRepo).findById(id);
-        verify(studentRepo).findStudentByEmail(email);
-        verify(studentRepo).save(basicStudent);
+        verify(studentRepository).findById(id);
+        verify(studentRepository).findByEmail(email);
+        verify(studentRepository).save(basicStudent);
     }
 
     @Test
     void getCountryByStudentIdTest() {
         Long studentId = 3L;
         String expected = "Czechia";
-        when(studentRepo.findStudentById(studentId)).thenReturn(Optional.of(basicStudent));
+        when(studentRepository.findById(studentId)).thenReturn(Optional.of(basicStudent));
 
         String actual = studentService.getCountryByStudentId(studentId);
 
         assertThat(expected).isEqualTo(actual);
-        verify(studentRepo).findStudentById(studentId);
+        verify(studentRepository).findById(studentId);
     }
 
     @Test
