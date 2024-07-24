@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
@@ -30,12 +31,13 @@ public class StudentServiceTest {
     @Mock
     private StudentRepository studentRepository;
     private final StudentDTOMapper studentDTOMapper = new StudentDTOMapper();
-    private final Student basicStudent = new Student(
+    private final Student basicStudent = new Student(1L,
             "Ewa",
             "Test",
             "testEwa@o2.pl",
+            LocalDate.EPOCH,
             "Czechia",
-            LocalDate.EPOCH);
+            Period.between(LocalDate.EPOCH, LocalDate.now()).getYears());
 
     @BeforeEach
     void setUp() {
@@ -64,12 +66,13 @@ public class StudentServiceTest {
     @Test
     void addStudentTest() {
         String email = "thomas@gmail.com";
-        Student newStudent = new Student(
+        Student newStudent = new Student(2L,
                 "Thomas",
                 "Test",
                 email,
+                LocalDate.EPOCH,
                 "Poland",
-                LocalDate.EPOCH);
+                Period.between(LocalDate.EPOCH, LocalDate.now()).getYears());
 
         when(studentRepository.findByEmail(email)).thenReturn(Optional.empty());
 

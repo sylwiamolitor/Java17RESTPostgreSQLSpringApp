@@ -1,16 +1,19 @@
 package com.example.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.Period;
 
 @Entity
 @Table(name = "student", uniqueConstraints = {
         @UniqueConstraint(name = "student_email_unique", columnNames = "email")
 })
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Student {
     @Id
     @SequenceGenerator(name = "student_sequence",
@@ -22,48 +25,22 @@ public class Student {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "first_name", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "first_name", nullable = false, columnDefinition = "varchar(255)")
     private String firstName;
 
-    @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "last_name", nullable = false, columnDefinition = "varchar(255)")
     private String lastName;
 
-    @Column(name = "email", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "email", nullable = false, columnDefinition = "varchar(255)", unique = true)
     private String email;
 
     @Column(name = "date_of_birth", nullable = false, columnDefinition = "DATE")
     private LocalDate dateOfBirth;
 
-    @Column(name = "country", nullable = true, columnDefinition = "TEXT")
+    @Column(name = "country", nullable = true, columnDefinition = "varchar(255)")
     private String country;
 
     @Transient
     private Integer age;
 
-    public Student() {
-    }
-
-    public Student(String firstName, String lastName, String email, String country, LocalDate dateOfBirth) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.country = country;
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public Integer getAge() {
-        return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
-    }
-
-    @Override
-    public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", country='" + country + '\'' +
-                ", age=" + age +
-                '}';
-    }
 }
