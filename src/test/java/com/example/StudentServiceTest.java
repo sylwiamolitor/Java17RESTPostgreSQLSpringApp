@@ -4,7 +4,6 @@ import com.example.entity.Student;
 import com.example.model.ApiDTO;
 import com.example.model.NameDTO;
 import com.example.model.RegionAndSubregionDTO;
-import com.example.model.StudentDTO;
 import com.example.repository.StudentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +29,7 @@ public class StudentServiceTest {
 
     @Mock
     private StudentRepository studentRepository;
-    private final StudentDTOMapper studentDTOMapper = new StudentDTOMapper();
+
     private final Student basicStudent = new Student(1L,
             "Ewa",
             "Test",
@@ -41,7 +40,7 @@ public class StudentServiceTest {
 
     @BeforeEach
     void setUp() {
-        studentService = new StudentService(studentRepository, studentDTOMapper);
+        studentService = new StudentService(studentRepository);
     }
 
     @Test
@@ -56,11 +55,9 @@ public class StudentServiceTest {
         String email = "testEwa@o2.pl";
         when(studentRepository.findByEmail(email)).thenReturn(Optional.of(basicStudent));
 
-        StudentDTO expected = studentDTOMapper.apply(basicStudent);
+        Student actual = studentService.getStudentByEmail(email);
 
-        StudentDTO actual = studentService.getStudentByEmail(email);
-
-        assertThat(expected).isEqualTo(actual);
+        assertThat(basicStudent).isEqualTo(actual);
     }
 
     @Test

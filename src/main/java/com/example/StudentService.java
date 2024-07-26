@@ -3,7 +3,6 @@ package com.example;
 import com.example.entity.Student;
 import com.example.model.ApiDTO;
 import com.example.model.RegionAndSubregionDTO;
-import com.example.model.StudentDTO;
 import com.example.repository.StudentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,25 +17,18 @@ import java.util.stream.Collectors;
 public class StudentService {
 
     private final StudentRepository studentRepository;
-    private final StudentDTOMapper studentDTOMapper;
-
     @Autowired
-    public StudentService(StudentRepository studentRepository, StudentDTOMapper studentDTOMapper) {
+    public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
-        this.studentDTOMapper = studentDTOMapper;
     }
 
-    public List<StudentDTO> getStudents() {
-        return studentRepository.findAll()
-                .stream()
-                .map(studentDTOMapper)
-                .collect(Collectors.toList());
+    public List<Student> getStudents() {
+        return studentRepository.findAll();
     }
 
-    public StudentDTO getStudentByEmail(String email) {
+    public Student getStudentByEmail(String email) {
         return studentRepository.findByEmail(email)
                 .stream()
-                .map(studentDTOMapper)
                 .findFirst()
                 .orElseThrow();
     }

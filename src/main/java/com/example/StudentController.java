@@ -1,12 +1,12 @@
 package com.example;
 
-import com.example.entity.Student;
+import com.example.mappers.StudentMapper;
 import com.example.model.ApiDTO;
 import com.example.model.RegionAndSubregionDTO;
 import com.example.model.StudentDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.modelmapper.ModelMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -14,39 +14,40 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "api/v1/student")
 @CrossOrigin("*")
 @Tag(name = "Operations on students")
+@RequiredArgsConstructor
 public class StudentController {
 
+    @Autowired
     private final StudentService studentService;
-
     @Autowired
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
-
+    private final StudentMapper studentMapper;
     @Autowired
-    public ModelMapper modelMapper;
+    private final RestTemplate restTemplate;
 
     @PostMapping("/addStudent")
     @Operation(summary = "Method for adding students")
-    public void addStudent(@RequestBody Student student) {
-        studentService.addNewStudent(student);
+    public void addStudent(@RequestBody StudentDTO student) {
+        studentService.addNewStudent(studentMapper.studentDTOToStudent(student));
     }
 
     @GetMapping
     @Operation(summary = "Method for getting all students in database")
     public List<StudentDTO> getStudents() {
-        return studentService.getStudents();
+        return studentService.getStudents().stream()
+                .map(studentMapper::studentToStudentDTO)
+                .collect(Collectors.toList());
     }
 
     @GetMapping(path = "{email}")
     @Operation(summary = "Method for getting one student by his/her email address")
     public StudentDTO getStudentByEmail(@PathVariable("email") String email) {
-        return studentService.getStudentByEmail(email);
+        return studentMapper.studentToStudentDTO(studentService.getStudentByEmail(email));
     }
 
     @GetMapping(path = "id/{id}")
@@ -77,9 +78,10 @@ public class StudentController {
     public Collection<RegionAndSubregionDTO> getRegionsByStudentId(@PathVariable("studentId") Long studentId) {
         String country = studentService.getCountryByStudentId(studentId);
         String uri = "https://restcountries.com/v3.1/independent?status=true";
-        RestTemplate restTemplate = new RestTemplate();
+
         ApiDTO[] apiObj = restTemplate.getForObject(uri, ApiDTO[].class);
 
         return studentService.mapApiToRegion(apiObj, country);
     }
+
 }
