@@ -6,6 +6,7 @@ import com.example.model.RegionAndSubregionDTO;
 import com.example.model.StudentDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class StudentController {
 
     @PostMapping("/addStudent")
     @Operation(summary = "Method for adding students")
-    public void addStudent(@RequestBody StudentDTO student) {
+    public void addStudent(@Valid @RequestBody StudentDTO student) {
         studentService.addNewStudent(studentMapper.studentDTOToStudent(student));
     }
 
@@ -65,12 +66,8 @@ public class StudentController {
     @PutMapping(path = "{studentId}")
     @Operation(summary = "Method for updating students")
     public void updateStudent(@PathVariable("studentId") Long studentId,
-                              @RequestParam(required = false) String firstName,
-                              @RequestParam(required = false) String lastName,
-                              @RequestParam(required = false) String dateOfBirth,
-                              @RequestParam(required = false) String email,
-                              @RequestParam(required = false) String country) {
-        studentService.updateStudent(studentId, firstName, lastName, dateOfBirth, email, country);
+                              @Valid @RequestBody StudentDTO student) {
+        studentService.updateStudent(studentId, studentMapper.studentDTOToStudent(student));
     }
 
     @GetMapping(path = "regionsByCountry/{studentId}")

@@ -92,19 +92,18 @@ public class StudentServiceTest {
 
     @Test
     void updateStudentTest() {
-        Long id = 2L;
-        String firstName = "Eva";
-        String lastName = "Testing";
-        String dateOfBirth = "1999-03-01";
+        Long id = 1L;
         String email = "testN2@o2.pl";
-        String country = "Germany";
+        LocalDate birthDate = LocalDate.of(1999, 3, 1);
+        Student student = new Student(id, "Eva", "Testing", email, birthDate, "Germany",
+                Period.between(birthDate, LocalDate.now()).getYears());
         when(studentRepository.findById(id)).thenReturn(Optional.of(basicStudent));
 
-        studentService.updateStudent(id, firstName, lastName, dateOfBirth, email, country);
+        studentService.updateStudent(id, student);
 
         verify(studentRepository).findById(id);
         verify(studentRepository).findByEmail(email);
-        verify(studentRepository).save(basicStudent);
+        verify(studentRepository).save(student);
     }
 
     @Test

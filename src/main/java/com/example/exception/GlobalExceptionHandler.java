@@ -1,5 +1,6 @@
 package com.example.exception;
 
+import org.hibernate.PropertyValueException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -18,12 +19,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public void handleException(ParseException e) {
         logger.error("An error occurred: ", e);
     }
+
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleCustomNotFoundException(IllegalArgumentException  ex) {
+    public ResponseEntity<String> handleCustomNotFoundException(IllegalArgumentException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<String> handleCustomDuplicateException(IllegalStateException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.IM_USED);
+    }
+
+    @ExceptionHandler(PropertyValueException.class)
+    public ResponseEntity<String> handleCustomPropertyException(PropertyValueException ex) {
+        return new ResponseEntity<>("Missing field " + ex.getPropertyName(), HttpStatus.BAD_REQUEST);
     }
 }
