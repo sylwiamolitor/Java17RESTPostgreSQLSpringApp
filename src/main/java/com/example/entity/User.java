@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,15 +23,17 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer ID;
+    private Integer ID;
 
-    public String firstName;
-    public String lastName;
-    public String email;
-    public String password;
+    private String firstName;
+    private String lastName;
+    private String email;
+
+    private char[] password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
@@ -39,6 +42,15 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return String.valueOf(password);
+    }
+
+    public void clearSensitive() {
+        Arrays.fill(password, '\0');
     }
 
     @Override
