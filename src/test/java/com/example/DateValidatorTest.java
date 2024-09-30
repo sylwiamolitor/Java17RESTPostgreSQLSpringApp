@@ -9,7 +9,7 @@ public class DateValidatorTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"2020-02-19", "1999-01-10"})
-    public void isEqualTest(String input) {
+    public void givenString_whenValidateDate_thenReturnCorrectnessStatus(String input) {
         assertTrue(DateValidator.isValid(input));
     }
 

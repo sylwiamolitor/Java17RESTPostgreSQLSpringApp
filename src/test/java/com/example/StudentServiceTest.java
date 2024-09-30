@@ -44,14 +44,14 @@ public class StudentServiceTest {
     }
 
     @Test
-    void getAllStudentsTest() {
+    void returnAllStudents() {
         studentService.getStudents();
 
         verify(studentRepository).findAll();
     }
 
     @Test
-    void canGetStudentTest() {
+    void givenEmail_whenGetStudent_thenReturnStudentWithEmail() {
         String email = "testEwa@o2.pl";
         when(studentRepository.findByEmail(email)).thenReturn(Optional.of(basicStudent));
 
@@ -61,7 +61,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    void addStudentTest() {
+    void givenStudent_whenAddStudent_thenAddStudentCorrectly() {
         String email = "thomas@gmail.com";
         Student newStudent = new Student(2L,
                 "Thomas",
@@ -79,7 +79,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    void deleteStudentTest() {
+    void givenId_whenDeleteStudent_thenDeleteStudentCorrectly() {
         long id = 2;
         boolean exists = true;
 
@@ -91,7 +91,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    void updateStudentTest() {
+    void givenStudent_whenUpdateStudentWithIds_thenUpdateStudentCorrectly() {
         Long id = 1L;
         String email = "testN2@o2.pl";
         LocalDate birthDate = LocalDate.of(1999, 3, 1);
@@ -107,7 +107,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    void getCountryByStudentIdTest() {
+    void givenStudentId_whenGetCountry_returnCorrectCountry() {
         Long studentId = 3L;
         String expected = "Czechia";
         when(studentRepository.findById(studentId)).thenReturn(Optional.of(basicStudent));
@@ -119,7 +119,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    void mapApiToRegionTest() {
+    void givenApi_whenMap_thenReturnRegion() {
         NameDTO italyDTO = new NameDTO("Italy", "Long name of Italy");
         NameDTO swedenDTO = new NameDTO("Sweden", "Long name of Sweden");
         ApiDTO[] apiObj = new ApiDTO[2];
