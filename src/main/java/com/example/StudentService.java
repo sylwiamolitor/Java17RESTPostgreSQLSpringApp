@@ -29,11 +29,10 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Student getStudentByEmail(String email) {
+    public Optional<Student> getStudentByEmail(String email) {
         return studentRepository.findByEmail(email)
                 .stream()
-                .findFirst()
-                .orElseThrow();
+                .findFirst();
     }
 
     public String getCountryByStudentId(Long studentId) {
@@ -51,13 +50,13 @@ public class StudentService {
                 .collect(Collectors.toList());
     }
 
-    public void addNewStudent(Student student) {
+    public Student addNewStudent(Student student) {
         Optional<Student> optionalStudent = studentRepository.findByEmail(student.getEmail());
         if (optionalStudent.isPresent()) {
             throw new IllegalStateException("Email taken");
         }
         checkIfEmailValid(student.getEmail());
-        studentRepository.save(student);
+        return studentRepository.save(student);
     }
 
     public void deleteStudent(Long id) {
@@ -69,14 +68,14 @@ public class StudentService {
     }
 
     @Transactional
-    public void updateStudent(Long id, Student newStudent) {
+    public Student updateStudent(Long id, Student newStudent) {
         if (studentRepository.findById(id).isPresent()) {
             checkIfEmailValid(newStudent.getEmail());
             Optional<Student> studentOptional = studentRepository.findByEmail(newStudent.getEmail());
             if (studentOptional.isPresent())
                 throw new IllegalStateException("Email taken");
             newStudent.setId(id);
-            studentRepository.save(newStudent);
+            return studentRepository.save(newStudent);
         } else throw new IllegalArgumentException("Student with id " + id + " does not exist");
     }
 

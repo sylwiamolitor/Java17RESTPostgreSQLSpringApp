@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -55,8 +56,9 @@ public class StudentServiceTest {
         String email = "testEwa@o2.pl";
         when(studentRepository.findByEmail(email)).thenReturn(Optional.of(basicStudent));
 
-        Student actual = studentService.getStudentByEmail(email);
+        Optional<Student> actual = studentService.getStudentByEmail(email);
 
+        assertTrue(actual.isPresent());
         assertThat(basicStudent).isEqualTo(actual);
     }
 
