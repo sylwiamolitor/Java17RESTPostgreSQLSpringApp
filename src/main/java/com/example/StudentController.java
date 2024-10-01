@@ -14,10 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -36,7 +36,7 @@ public class StudentController {
 
     @PostMapping("/addStudent")
     @Operation(summary = "Method for adding students")
-    public ResponseEntity<Student> addStudent(@Valid @RequestBody StudentDTO student) throws URISyntaxException {
+    public ResponseEntity<Student> addStudent(@Valid @RequestBody StudentDTO student) {
         return ResponseEntity.ok(studentService.addNewStudent(studentMapper.studentDTOToStudent(student)));
     }
 
@@ -51,7 +51,9 @@ public class StudentController {
     @GetMapping(path = "{email}")
     @Operation(summary = "Method for getting one student by his/her email address")
     public ResponseEntity<StudentDTO> getStudentByEmail(@PathVariable("email") String email) {
-        return ResponseEntity.ok(studentMapper.studentToStudentDTO(studentService.getStudentByEmail(email).get()));
+        Optional<Student> result = studentService.getStudentByEmail(email);
+        return result.map(student -> ResponseEntity.ok(studentMapper.studentToStudentDTO(student)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping(path = "id/{id}")
