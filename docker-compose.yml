@@ -11,7 +11,7 @@ services:
     depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=${DATABASE_URL}
+      - SPRING_DATASOURCE_URL=${DATABASE_URL}/${DATABASE_NAME}
       - SPRING_DATASOURCE_USERNAME=${DATABASE_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
@@ -26,6 +26,7 @@ services:
       - POSTGRES_USER=${DATABASE_USERNAME}
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       - POSTGRES_DB=${DATABASE_NAME}
+
   swagger-ui:
     image: swaggerapi/swagger-ui
     container_name: swagger_ui_container
