@@ -59,7 +59,7 @@ public class StudentServiceTest {
         Optional<Student> actual = studentService.getStudentByEmail(email);
 
         assertTrue(actual.isPresent());
-        assertThat(basicStudent).isEqualTo(actual);
+        assertThat(basicStudent).isEqualTo(actual.get());
     }
 
     @Test
