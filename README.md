@@ -49,7 +49,7 @@ Created token will be used in requests or to authenticate user in `authenticate`
 Tool Postman or OpenAPI are recommended. The available options are:
 - adding student
 - deleting student - DELETE http://localhost:8090/api/v1/student/{{studentId}}
-- getting all students http://localhost:8090/api/v1/student
+- getting all students (pagination) http://localhost:8090/api/v1/student; additional parameters shown below (offset, pageSize, sortBy) ![img_5.png](img_5.png)
 - updating student
 - getting one student by email - GET http://localhost:8090/api/v1/student/{{email}}
 - getting region and subregion from outside API based on student's country GET http://localhost:8090/api/v1/student/regionsByCountry/{studentId}

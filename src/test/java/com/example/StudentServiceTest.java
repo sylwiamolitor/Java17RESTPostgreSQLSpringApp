@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -31,6 +34,9 @@ public class StudentServiceTest {
     @Mock
     private StudentRepository studentRepository;
 
+    @Mock
+    Page<Student> studentPage;
+
     private final Student basicStudent = new Student(1L,
             "Ewa",
             "Test",
@@ -46,9 +52,13 @@ public class StudentServiceTest {
 
     @Test
     void returnAllStudents() {
-        studentService.getStudents();
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("id"));
+        when(studentRepository.findAll(pageRequest)).thenReturn(studentPage);
 
-        verify(studentRepository).findAll();
+        Page<Student> result = studentService.getStudents(pageRequest);
+
+        verify(studentRepository).findAll(pageRequest);
+        assertThat(studentPage.getSize()).isEqualTo(result.getSize());
     }
 
     @Test

@@ -5,20 +5,22 @@ import com.example.mappers.StudentMapper;
 import com.example.model.ApiDTO;
 import com.example.model.RegionAndSubregionDTO;
 import com.example.model.StudentDTO;
+import io.micrometer.common.util.StringUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "api/v1/student")
@@ -41,11 +43,21 @@ public class StudentController {
     }
 
     @GetMapping
-    @Operation(summary = "Method for getting all students in database")
-    public ResponseEntity<List<StudentDTO>> getStudents() {
-        return ResponseEntity.ok(studentService.getStudents().stream()
-                .map(studentMapper::studentToStudentDTO)
-                .collect(Collectors.toList()));
+    @Operation(summary = "Method for getting all students in database (using pagination)")
+    public ResponseEntity<Page<StudentDTO>> getStudents(
+            @RequestParam(value = "offset", required = false) Integer offset,
+            @RequestParam(value = "pageSize", required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", required = false) String sortBy
+    ) {
+        if (offset == null)
+            offset = 0;
+        if (pageSize == null)
+            pageSize = 10;
+        if (StringUtils.isEmpty(sortBy))
+            sortBy = "id";
+        return ResponseEntity.ok(
+                (studentService.getStudents(PageRequest.of(offset, pageSize, Sort.by(sortBy)))
+                        .map(studentMapper::studentToStudentDTO)));
     }
 
     @GetMapping(path = "{email}")
