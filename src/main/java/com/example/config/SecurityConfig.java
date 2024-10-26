@@ -23,7 +23,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requestMatcherRegistry -> {
-                    requestMatcherRegistry.requestMatchers("/api/v1/auth/**").permitAll();
+                    requestMatcherRegistry.requestMatchers("/api/v1/auth/**",
+                            "/swagger-ui/**",
+                            "/swagger-ui.html",
+                            "/swagger-resources/**",
+                            "/v3/api-docs/**"
+                    ).permitAll();
                     requestMatcherRegistry.anyRequest().authenticated();
                 })
                 .sessionManagement(
