@@ -3,6 +3,7 @@ package com.example;
 import com.example.entity.Student;
 import com.example.mappers.StudentMapper;
 import com.example.model.ApiDTO;
+import com.example.model.PageResponseDTO;
 import com.example.model.RegionAndSubregionDTO;
 import com.example.model.StudentDTO;
 import io.micrometer.common.util.StringUtils;
@@ -18,9 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping(path = "api/v1/student")
@@ -70,8 +69,11 @@ public class StudentController {
 
     @GetMapping(path = "id/{id}")
     @Operation(summary = "Method for getting student's country by his/her id")
-    public ResponseEntity<Collection<String>> getCountryById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(Collections.singletonList(studentService.getCountryByStudentId(id)));
+    public ResponseEntity<Optional<String>> getCountryById(@PathVariable("id") Long id) {
+        Optional<String> country = studentService.getCountryByStudentId(id);
+        if (country.isPresent())
+            return ResponseEntity.ok(studentService.getCountryByStudentId(id));
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping(path = "{studentId}")
@@ -90,13 +92,32 @@ public class StudentController {
 
     @GetMapping(path = "regionsByCountry/{studentId}")
     @Operation(summary = "Method for getting students' regions")
-    public ResponseEntity<Collection<RegionAndSubregionDTO>> getRegionsByStudentId(@PathVariable("studentId") Long studentId) {
-        String country = studentService.getCountryByStudentId(studentId);
+    public ResponseEntity<PageResponseDTO<RegionAndSubregionDTO>> getRegionsByStudentId(
+            @PathVariable("studentId") Long studentId,
+            @RequestParam(value = "offset", required = false) Integer offset,
+            @RequestParam(value = "pageSize", required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", required = false) String sortBy) {
+        if (offset == null)
+            offset = 0;
+        if (pageSize == null)
+            pageSize = 10;
+        if (StringUtils.isEmpty(sortBy))
+            sortBy = "id";
+        Optional<String> country = studentService.getCountryByStudentId(studentId);
+        if (country.isEmpty())
+            return ResponseEntity.notFound().build();
+
         String uri = "https://restcountries.com/v3.1/independent?status=true";
-
         ApiDTO[] apiObj = restTemplate.getForObject(uri, ApiDTO[].class);
+        Collection<RegionAndSubregionDTO> currentRegions = studentService.mapApiToRegion(apiObj, country.get());
+        List<RegionAndSubregionDTO> regionsList = new ArrayList<>(currentRegions);
 
-        return ResponseEntity.ok(studentService.mapApiToRegion(apiObj, country));
+        int totalSize = regionsList.size();
+        int fromIndex = Math.min(offset, totalSize);
+        int toIndex = Math.min(fromIndex + pageSize, totalSize);
+
+        return ResponseEntity.ok(new PageResponseDTO<>(regionsList.subList(fromIndex, toIndex), totalSize, pageSize,
+                offset, sortBy));
     }
 
 }

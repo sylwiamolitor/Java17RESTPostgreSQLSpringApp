@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -36,12 +37,12 @@ public class StudentService {
                 .findFirst();
     }
 
-    public String getCountryByStudentId(Long studentId) {
+    public Optional<String> getCountryByStudentId(Long studentId) {
         return studentRepository.findById(studentId)
                 .stream()
                 .map(Student::getCountry)
-                .findFirst()
-                .orElseThrow();
+                .filter(Objects::nonNull)
+                .findFirst();
     }
 
     public Collection<RegionAndSubregionDTO> mapApiToRegion(ApiDTO[] apiObj, String country) {
