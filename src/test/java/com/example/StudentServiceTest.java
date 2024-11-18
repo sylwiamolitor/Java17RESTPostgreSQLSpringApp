@@ -124,9 +124,10 @@ public class StudentServiceTest {
         String expected = "Czechia";
         when(studentRepository.findById(studentId)).thenReturn(Optional.of(basicStudent));
 
-        String actual = studentService.getCountryByStudentId(studentId);
+        Optional<String> actual = studentService.getCountryByStudentId(studentId);
 
-        assertThat(expected).isEqualTo(actual);
+        assertTrue(actual.isPresent());
+        assertThat(expected).isEqualTo(actual.get());
         verify(studentRepository).findById(studentId);
     }
 

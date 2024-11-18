@@ -102,7 +102,7 @@ public class StudentController {
         if (pageSize == null)
             pageSize = 10;
         if (StringUtils.isEmpty(sortBy))
-            sortBy = "id";
+            sortBy = "region";
         Optional<String> country = studentService.getCountryByStudentId(studentId);
         if (country.isEmpty())
             return ResponseEntity.notFound().build();
