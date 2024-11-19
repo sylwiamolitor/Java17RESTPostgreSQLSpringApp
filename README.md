@@ -1,5 +1,5 @@
 # Spring and PostgreSQL application
-Spring application, which uses REST, DTOs and PostgreSQL database.
+Spring application, which uses REST, DTOs, Spring Security (using JWT) and PostgreSQL database.
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -35,8 +35,8 @@ Java, Spring, PostgreSQL, Docker, OpenAPI, Spring Security.
 ![img_1.png](img_1.png)
 
 ## Setup
-Define global environment variables called `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD` and `DATABASE_NAME`. 
-Database credentials are needed for the application to function.
+Define global environment variables called `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `DATABASE_NAME` and `SECRET_KEY`.
+Database credentials are needed for the application to function. Secret key is needed for app's security.
 Start the application.
 Operating port is 8090.
 To start the application use command `docker compose up`.
@@ -60,6 +60,6 @@ Tool Postman or OpenAPI are recommended. The available options are:
 Complete.
 
 ## Room for Improvement
-OpenAPI and dockerization of Spring Security.
+Dockerization of Spring Security.
 
 
