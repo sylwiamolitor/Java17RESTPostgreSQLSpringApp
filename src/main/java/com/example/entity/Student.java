@@ -37,7 +37,7 @@ public class Student {
     @Column(name = "date_of_birth", nullable = false, columnDefinition = "DATE")
     private LocalDate dateOfBirth;
 
-    @Column(name = "country", nullable = true, columnDefinition = "varchar(255)")
+    @Column(name = "country", columnDefinition = "varchar(255)")
     private String country;
 
     @Transient
