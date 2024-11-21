@@ -1,4 +1,5 @@
-FROM amazoncorretto:17-alpine-jdk
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY target/demo-0.0.4-SNAPSHOT.jar app.jar
 EXPOSE 8090
-COPY out/artifacts/demo_jar/demo.jar demo.jar
-ENTRYPOINT ["java","-jar","/demo.jar", "--environment=Development"]
+ENTRYPOINT ["java", "-jar", "app.jar"]

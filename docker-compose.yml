@@ -1,40 +1,38 @@
 version: '2'
 
 services:
+  db:
+    image: postgres:15.6-alpine
+    restart: always
+    container_name: db
+    environment:
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+
   app:
     image: demo:latest
     build:
       dockerfile: Dockerfile
-    container_name: demo
+    container_name: app
     ports:
       - "8090:8090"
     depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=${DATABASE_URL}/${DATABASE_NAME}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${DATABASE_NAME}
       - SPRING_DATASOURCE_USERNAME=${DATABASE_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
       - SPRING_JPA_SHOW_SQL=true
       - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
       - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      - JWT_SECRET=${SECRET_KEY}
 
+volumes:
   db:
-    image: 'postgres:15.6-alpine'
-    container_name: db
-    environment:
-      - POSTGRES_USER=${DATABASE_USERNAME}
-      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
-      - POSTGRES_DB=${DATABASE_NAME}
-
-  swagger-ui:
-    image: swaggerapi/swagger-ui
-    container_name: swagger_ui_container
-    ports:
-      - "80:8080"
-    depends_on:
-      - app
-    volumes:
-      - ./api-docs.json:/usr/share/nginx/html/api-docs.json
-    environment:
-      - API_URL=api-docs.json
+    driver: local
