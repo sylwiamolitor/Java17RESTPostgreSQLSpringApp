@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
@@ -7,37 +7,69 @@ function App() {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const token = 'TODO';
+    const [token, setToken] = useState('');
 
-    useEffect(() => {
-        const fetchStudents = async () => {
-            try {
+    const handleInputChange = (event) => {
+        setToken(event.target.value);
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        localStorage.setItem('token', token);
+        alert('Token saved successfully!');
+        await fetchStudents();
+    };
+
+    const fetchStudents = async () => {
+        setLoading(true);
+        try {
+            if (token !== '') {
                 const response = await axios.get('http://localhost:8090/api/v1/student', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
                 setStudents(response.data.content);
-                setLoading(false);
-            } catch (err) {
-                setError(err);
-                setLoading(false);
             }
-        };
+        } catch (err) {
+            setError(err);
+            setStudents([]);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-        fetchStudents();
+    useEffect(() => {
+        const savedToken = localStorage.getItem('token');
+        if (savedToken) {
+            setToken(savedToken);
+            fetchStudents();
+        } else {
+            setLoading(false);
+        }
     }, []);
 
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error fetching students: {error.message}</p>;
+    if (error) return <p>Error: {error.message}</p>;
 
     return (
         <div className="App">
             <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
+                <img src={logo} className="App-logo" alt="logo"/>
                 <p>
                     Students app.
                 </p>
+                <h2>Enter Token</h2>
+                <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        value={token}
+                        onChange={handleInputChange}
+                        placeholder="Enter your token"
+                        required
+                    />
+                    <button type="submit">Save Token</button>
+                </form>
                 <a
                     className="Authenticate"
                     href="/api/v1/auth/authenticate"
