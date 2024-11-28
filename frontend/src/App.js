@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
+import RegisterForm from './RegisterForm';
+import Card from './Card';
 
 function App() {
     const [students, setStudents] = useState([]);
@@ -59,6 +61,10 @@ function App() {
                 <p>
                     Students app.
                 </p>
+                <h2>Enter credentials</h2>
+                <Card>
+                    <RegisterForm />
+                </Card>
                 <h2>Enter Token</h2>
                 <form onSubmit={handleSubmit}>
                     <input
