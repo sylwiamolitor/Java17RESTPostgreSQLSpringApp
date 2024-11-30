@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import logo from './logo.svg';
-import './App.css';
-import RegisterForm from './RegisterForm';
-import Card from './Card';
+import './css/App.css';
+import RegisterForm from './forms/RegisterForm';
+import Card from './forms/Card';
+import AuthorizeForm from "./forms/AuthorizeForm";
 
 function App() {
     const [students, setStudents] = useState([]);
@@ -61,9 +62,12 @@ function App() {
                 <p>
                     Students app.
                 </p>
-                <h2>Enter credentials</h2>
                 <Card>
-                    <RegisterForm />
+                </Card>
+                <Card><h2>Register</h2>
+                    <RegisterForm/>
+                    <h2>Authorize</h2>
+                    <AuthorizeForm/>
                 </Card>
                 <h2>Enter Token</h2>
                 <form onSubmit={handleSubmit}>
@@ -71,7 +75,7 @@ function App() {
                         type="text"
                         value={token}
                         onChange={handleInputChange}
-                        placeholder="Enter your token"
+                        placeholder="Enter token"
                         required
                     />
                     <button type="submit">Save Token</button>
