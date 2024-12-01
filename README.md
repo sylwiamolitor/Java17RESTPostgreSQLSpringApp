@@ -40,7 +40,7 @@ Java, Spring, PostgreSQL, Docker, OpenAPI, Spring Security, React
 Define global environment variables called `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `DATABASE_NAME` and `SECRET_KEY`.
 Database credentials are needed for the application to function. Secret key is needed for app's security.
 Start the application.
-Operating port is 8090.
+The operating port is 8090.
 To start the application use command `docker compose up`.
 A JWT token is needed to register user and authorize requests. Create JWT token for example at
 https://jwt.io/ and add it to header in `register` endpoint. ![img_3.png](img_3.png) JWT token has specific syntax - subject is email. ![img_4.png](img_4.png) Create user with correct email.

@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import logo from './logo.svg';
+import studentsPic from './studentsPic.jpg';
 import './css/App.css';
 import RegisterForm from './forms/RegisterForm';
 import Card from './forms/Card';
 import AuthorizeForm from "./forms/AuthorizeForm";
+import StudentForm from "./forms/StudentForm";
 
 function App() {
     const [students, setStudents] = useState([]);
@@ -58,13 +60,20 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
+                <div className="image-container">
+                    <img src={studentsPic} alt="StudentsPic" className="scaled-image"/>
+                </div>
                 <p>
                     Students app.
                 </p>
+                Quick instruction:
+                <li>Register using token, e-mail address and password.</li>
+                <li>Authorize using token from the registration, e-mail address, password, first name and last name.
+                </li>
+                <li>Enter the token from the authorization and have fun using the application's functionalities :)</li>
+
                 <Card>
-                </Card>
-                <Card><h2>Register</h2>
+                    <h2>Register</h2>
                     <RegisterForm/>
                     <h2>Authorize</h2>
                     <AuthorizeForm/>
@@ -88,6 +97,9 @@ function App() {
                 >
                     Authenticate
                 </a>
+                <Card><h2>Add student</h2>
+                    <StudentForm/>
+                </Card>
             </header>
             <h2>Students List</h2>
             <ul>
@@ -95,6 +107,7 @@ function App() {
                     <li key={student.id}>{student.firstName}</li>
                 ))}
             </ul>
+            <img src={logo} className="App-logo" alt="logo"/>
         </div>
     );
 }
