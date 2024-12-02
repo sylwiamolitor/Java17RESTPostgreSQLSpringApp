@@ -43,7 +43,6 @@ const AuthorizeForm = () => {
                     />
                 </label>
             </div>
-            <button type="submit">Submit</button>
         </form>
     );
 };

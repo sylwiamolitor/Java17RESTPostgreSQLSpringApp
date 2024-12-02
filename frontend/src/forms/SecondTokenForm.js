@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const RegisterForm = () => {
+const SecondTokenForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -56,4 +56,4 @@ const RegisterForm = () => {
     );
 };
 
-export default RegisterForm;
+export default SecondTokenForm;

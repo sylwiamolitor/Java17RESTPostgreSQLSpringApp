@@ -3,16 +3,17 @@ import axios from 'axios';
 import logo from './logo.svg';
 import studentsPic from './studentsPic.jpg';
 import './css/App.css';
-import RegisterForm from './forms/RegisterForm';
+import SecondTokenForm from './forms/SecondTokenForm';
 import Card from './forms/Card';
 import AuthorizeForm from "./forms/AuthorizeForm";
 import StudentForm from "./forms/StudentForm";
 
 function App() {
     const [students, setStudents] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [token, setToken] = useState('');
+    const [firstName, setFirstName] = useState('');
 
     const handleInputChange = (event) => {
         setToken(event.target.value);
@@ -43,12 +44,42 @@ function App() {
             setLoading(false);
         }
     };
-
+    const handleRegister = async () => {
+        try {
+            const response = await axios.post('/api/v1/auth/register', {
+                firstName: firstName,
+                lastName: "Efr",
+                email: "trw@o2.pl",
+                password: "all"
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            console.log('Registration successful:', response.data);
+        } catch (error) {
+            console.error('There was a problem with the registration operation:', error);
+        }
+    };
+    const handleAuth = async () => {
+        try {
+            const response = await axios.post('/api/v1/auth/authenticate', {
+                email: "trw@o2.pl",
+                password: "all"
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            console.log('Authentication successful:', response.data);
+        } catch (error) {
+            console.error('There was a problem with the authentication operation:', error);
+        }
+    };
     useEffect(() => {
         const savedToken = localStorage.getItem('token');
         if (savedToken) {
             setToken(savedToken);
-            fetchStudents();
         } else {
             setLoading(false);
         }
@@ -74,7 +105,7 @@ function App() {
 
                 <Card>
                     <h2>Register</h2>
-                    <RegisterForm/>
+                    <SecondTokenForm setFirstName={setFirstName}/>
                     <h2>Authorize</h2>
                     <AuthorizeForm/>
                 </Card>
@@ -89,16 +120,27 @@ function App() {
                     />
                     <button type="submit">Save Token</button>
                 </form>
-                <a
-                    className="Authenticate"
-                    href="/api/v1/auth/authenticate"
-                    target="_blank"
+                <button
+                    className="Register"
+                    onClick={handleRegister}
                     rel="noopener noreferrer"
                 >
-                    Authenticate
-                </a>
-                <Card><h2>Add student</h2>
+                    Register
+                </button>
+                <button
+                    className="Authentication"
+                    onClick={handleAuth}
+                    rel="noopener noreferrer"
+                >
+                    Authentication
+                </button>
+                <Card><h2>Add/update student</h2>
                     <StudentForm/>
+                </Card>
+                <Card>
+                    <h2>Get student by email</h2>
+                    <h2>Delete student by id</h2>
+                    <h2>Get regions by student id.</h2>
                 </Card>
             </header>
             <h2>Students List</h2>

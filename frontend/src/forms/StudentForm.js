@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 const StudentForm = () => {
     const [student, setStudent] = useState({
+        id: '',
         email: '',
         lastName: '',
         firstName: '',
@@ -17,6 +18,17 @@ const StudentForm = () => {
     return (
         <div>
             <form>
+                <div>
+                    <label>
+                        Id:
+                        <input
+                            type="number"
+                            name="id"
+                            value={student.id}
+                            onChange={handleChange}
+                        />
+                    </label>
+                </div>
                 <div>
                     <label>
                         First Name:
