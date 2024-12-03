@@ -1,5 +1,5 @@
 # Spring and PostgreSQL application
-Spring application, which uses REST, DTOs, Spring Security (using JWT) and PostgreSQL database.
+Spring application, which uses REST, DTOs, Spring Security (using JWT), React and PostgreSQL database.
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -13,10 +13,12 @@ Spring application, which uses REST, DTOs, Spring Security (using JWT) and Postg
 
 
 ## General Information
-This project was created to test the capabilities of Spring, Spring Security and PostgreSQL - especially JPA. OpenAPI allows to describe, consume and visualize RESTful web services.
+This project was created to test the capabilities of Spring, Spring Security and PostgreSQL - especially JPA. 
+OpenAPI allows to describe, consume and visualize RESTful web services.
+React is responsible for the appearance of the application
 
 ## Technologies Used
-Java, Spring, PostgreSQL, Docker, OpenAPI, Spring Security.
+Java, Spring, PostgreSQL, Docker, OpenAPI, Spring Security, React
 
 ## Features
 - Adding student,
@@ -38,7 +40,7 @@ Java, Spring, PostgreSQL, Docker, OpenAPI, Spring Security.
 Define global environment variables called `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, `DATABASE_NAME` and `SECRET_KEY`.
 Database credentials are needed for the application to function. Secret key is needed for app's security.
 Start the application.
-Operating port is 8090.
+The operating port is 8090.
 To start the application use command `docker compose up`.
 A JWT token is needed to register user and authorize requests. Create JWT token for example at
 https://jwt.io/ and add it to header in `register` endpoint. ![img_3.png](img_3.png) JWT token has specific syntax - subject is email. ![img_4.png](img_4.png) Create user with correct email.
@@ -60,6 +62,6 @@ Tool Postman or OpenAPI are recommended. The available options are:
 Complete.
 
 ## Room for Improvement
-Dockerization of Spring Security.
+React.
 
 
