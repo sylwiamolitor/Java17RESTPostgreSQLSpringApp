@@ -3,9 +3,9 @@ import axios from 'axios';
 import logo from './logo.svg';
 import studentsPic from './studentsPic.jpg';
 import './css/App.css';
-import SecondTokenForm from './forms/SecondTokenForm';
+import AuthorizeForm from './forms/AuthorizeForm';
 import Card from './forms/Card';
-import AuthorizeForm from "./forms/AuthorizeForm";
+import RegisterForm from "./forms/RegisterForm";
 import StudentForm from "./forms/StudentForm";
 
 function App() {
@@ -105,9 +105,9 @@ function App() {
 
                 <Card>
                     <h2>Register</h2>
-                    <SecondTokenForm setFirstName={setFirstName}/>
+                    <AuthorizeForm setFirstName={setFirstName}/>
                     <h2>Authorize</h2>
-                    <AuthorizeForm/>
+                    <RegisterForm/>
                 </Card>
                 <h2>Enter Token</h2>
                 <form onSubmit={handleSubmit}>
