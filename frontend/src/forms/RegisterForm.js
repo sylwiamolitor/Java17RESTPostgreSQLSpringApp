@@ -1,45 +1,36 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const RegisterForm = () => {
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: ''
-    });
+const RegisterForm = ({ setFirstName, firstName, setLastName, lastName }) => {
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+    const handleFirstNameChange = (event) => {
+        setFirstName(event.target.value);
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Form submitted:', formData);
+    const handleLastNameChange = (event) => {
+        setLastName(event.target.value);
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form>
             <div>
                 <label>
                     First Name:
                     <input
                         type="text"
                         name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange}
+                        value={firstName}
+                        onChange={handleFirstNameChange}
                     />
                 </label>
             </div>
             <div>
                 <label>
-                    Last Name:
+                Last Name:
                     <input
                         type="text"
                         name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
+                        value={lastName}
+                        onChange={handleLastNameChange}
                     />
                 </label>
             </div>

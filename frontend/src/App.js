@@ -13,17 +13,20 @@ function App() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [token, setToken] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [buttonText, setButtonText] = useState('own');
 
     const handleInputChange = (event) => {
         setToken(event.target.value);
+        setButtonText('own');
     };
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
         localStorage.setItem('token', token);
-        alert('Token saved successfully!');
-        await fetchStudents();
+        setButtonText('own');
     };
 
     const fetchStudents = async () => {
@@ -44,38 +47,6 @@ function App() {
             setLoading(false);
         }
     };
-    const handleRegister = async () => {
-        try {
-            const response = await axios.post('/api/v1/auth/register', {
-                firstName: firstName,
-                lastName: "Efr",
-                email: "trw@o2.pl",
-                password: "all"
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            console.log('Registration successful:', response.data);
-        } catch (error) {
-            console.error('There was a problem with the registration operation:', error);
-        }
-    };
-    const handleAuth = async () => {
-        try {
-            const response = await axios.post('/api/v1/auth/authenticate', {
-                email: "trw@o2.pl",
-                password: "all"
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            console.log('Authentication successful:', response.data);
-        } catch (error) {
-            console.error('There was a problem with the authentication operation:', error);
-        }
-    };
     useEffect(() => {
         const savedToken = localStorage.getItem('token');
         if (savedToken) {
@@ -84,7 +55,42 @@ function App() {
             setLoading(false);
         }
     }, []);
-
+    const handleRegister = async () => {
+        try {
+            const response = await axios.post('/api/v1/auth/register', {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: password,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            console.log('Registration successful:', response.data);
+            setToken(response.data.token)
+            setButtonText('correct registration');
+        } catch (error) {
+            console.error('There was a problem with the registration operation:', error);
+        }
+    };
+    const handleAuth = async () => {
+        try {
+            const response = await axios.post('/api/v1/auth/authenticate', {
+                email: email,
+                password: password
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setToken(response.data.token)
+            setButtonText('correct authentication');
+            console.log('Authentication successful:', response.data);
+        } catch (error) {
+            console.error('There was a problem with the authentication operation:', error);
+        }
+    };
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
 
@@ -105,11 +111,12 @@ function App() {
 
                 <Card>
                     <h2>Register</h2>
-                    <AuthorizeForm setFirstName={setFirstName}/>
+                    <RegisterForm setFirstName={setFirstName} firstName={firstName} setLastName={setLastName}
+                                  lastName={lastName}/>
                     <h2>Authorize</h2>
-                    <RegisterForm/>
+                    <AuthorizeForm setEmail={setEmail} setPassword={setPassword} password={password} email={email}/>
                 </Card>
-                <h2>Enter Token</h2>
+                <h3>Enter Token (current: {buttonText})</h3>
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"

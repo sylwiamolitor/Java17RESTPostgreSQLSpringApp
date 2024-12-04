@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 
-const AuthorizeForm = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+const AuthorizeForm = ({setEmail, setPassword, email, password}) => {
     const [showPassword, setShowPassword] = useState(false);
-
 
     const togglePasswordVisibility = () => {
         setShowPassword((prev) => !prev);
@@ -18,14 +15,8 @@ const AuthorizeForm = () => {
         setPassword(event.target.value);
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log('Submitted Email:', email);
-        console.log('Submitted Password:', password);
-    };
-
     return (
-        <form onSubmit={handleSubmit}>
+        <form>
             <div>
                 <label htmlFor="email">Email:</label>
                 <input
@@ -51,7 +42,6 @@ const AuthorizeForm = () => {
                     {showPassword ? "Hide" : "Show"} Password
                 </button>
             </div>
-            <button type="submit">Save</button>
         </form>
     );
 };
