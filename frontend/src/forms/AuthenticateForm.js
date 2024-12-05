@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const AuthorizeForm = ({setEmail, setPassword, email, password}) => {
+const AuthenticateForm = ({setEmail, setPassword, email, password}) => {
     const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
@@ -46,4 +46,4 @@ const AuthorizeForm = ({setEmail, setPassword, email, password}) => {
     );
 };
 
-export default AuthorizeForm;
+export default AuthenticateForm;
