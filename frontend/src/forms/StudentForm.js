@@ -1,18 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const StudentForm = () => {
-    const [student, setStudent] = useState({
-        id: '',
-        email: '',
-        lastName: '',
-        firstName: '',
-        dateOfBirth: '1900-03-01',
-        country: '',
-    });
+const StudentForm = ({student, setStudent}) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setStudent({ ...student, [name]: value });
+
     };
 
     return (

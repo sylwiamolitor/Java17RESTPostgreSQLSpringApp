@@ -18,6 +18,19 @@ function App() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [buttonText, setButtonText] = useState('own');
+    const [student, setStudent] = useState({
+        id: '',
+        email: '',
+        lastName: '',
+        firstName: '',
+        dateOfBirth: '2000-03-01',
+        country: '',
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setStudent({ ...student, [name]: value });
+    };
 
     const handleInputChange = (event) => {
         setToken(event.target.value);
@@ -92,6 +105,25 @@ function App() {
             console.error('There was a problem with the authentication operation:', error);
         }
     };
+    const handleAdd= async () => {
+              try {
+                  const response = await axios.post('/api/v1/student/addStudent', {
+                      email: student.email,
+                      lastName: student.lastName,
+                      firstName: student.firstName,
+                      dateOfBirth: student.dateOfBirth,
+                      country: student.country
+                  }, {
+                      headers: {
+                          Authorization: `Bearer ${token}`
+                      }
+                  });
+                  console.log('Added user:', response.data);
+                  await fetchStudents();
+              } catch (error) {
+                  console.error('There was a problem with the authentication operation:', error);
+              }
+    };
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
 
@@ -137,11 +169,12 @@ return (
             <div className="buttons-container">
                 <button className="Register" onClick={handleRegister}>Register</button>
                 <button className="Authentication" onClick={handleAuth}>Authenticate</button>
+                <button className="Addition" onClick={handleAdd}>Add student</button>
             </div>
 
             <Card>
-                <h2>Add/Update Student</h2>
-                <StudentForm />
+                <h2>Add/Update Student </h2>
+                <StudentForm student={student} setStudent={setStudent}/>
             </Card>
 
             <Card>
@@ -157,8 +190,8 @@ return (
         <section className="students-list">
             <h2>Students List</h2>
             <ul>
-                {students.map(student => (
-                    <li key={student.id}>{student.firstName}</li>
+                {students.map((student, index) => (
+                    <li key={index}>{student.firstName}</li>
                 ))}
             </ul>
         </section>
