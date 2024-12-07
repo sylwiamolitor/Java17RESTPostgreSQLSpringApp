@@ -191,7 +191,9 @@ return (
             <h2>Students List</h2>
             <ul>
                 {students.map((student, index) => (
-                    <li key={index}>{student.firstName}</li>
+                    <li key={index} className="student-item">
+                        {student.firstName} {student.lastName}
+                    </li>
                 ))}
             </ul>
         </section>
