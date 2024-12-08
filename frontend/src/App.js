@@ -121,8 +121,27 @@ function App() {
                   console.log('Added user:', response.data);
                   await fetchStudents();
               } catch (error) {
-                  console.error('There was a problem with the authentication operation:', error);
+                  console.error('There was a problem with the adding:', error);
               }
+    };
+    const handleUpdate= async () => {
+                  try {
+                      const response = await axios.put(`/api/v1/student/${student.id}`, {
+                          email: student.email,
+                          lastName: student.lastName,
+                          firstName: student.firstName,
+                          dateOfBirth: student.dateOfBirth,
+                          country: student.country
+                      }, {
+                          headers: {
+                              Authorization: `Bearer ${token}`
+                          }
+                      });
+                      console.log('Updated user:', response.data);
+                      await fetchStudents();
+                  } catch (error) {
+                      console.error('There was a problem with the updating:', error);
+                  }
     };
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
@@ -170,6 +189,7 @@ return (
                 <button className="Register" onClick={handleRegister}>Register</button>
                 <button className="Authentication" onClick={handleAuth}>Authenticate</button>
                 <button className="Addition" onClick={handleAdd}>Add student</button>
+                <button className="Update" onClick={handleUpdate}>Update student</button>
             </div>
 
             <Card>
@@ -190,11 +210,15 @@ return (
         <section className="students-list">
             <h2>Students List</h2>
             <ul>
-                {students.map((student, index) => (
-                    <li key={index} className="student-item">
-                        {student.firstName} {student.lastName}
-                    </li>
-                ))}
+                {students?.length > 0 ? (
+                    students.map((student, index) => (
+                        <li key={index} className="student-item">
+                            {student.firstName} {student.lastName}
+                        </li>
+                    ))
+                ) : (
+                    <li>No students available.</li>
+                )}
             </ul>
         </section>
 
