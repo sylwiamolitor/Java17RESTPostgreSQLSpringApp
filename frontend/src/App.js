@@ -143,6 +143,20 @@ function App() {
                       console.error('There was a problem with the updating:', error);
                   }
     };
+    const handleDelete= async () => {
+                      try {
+                      console.log(`/api/v1/student/${student.id}`);
+                          const response = await axios.delete(`/api/v1/student/${student.id}`, {
+                              headers: {
+                                  Authorization: `Bearer ${token}`
+                              }
+                          });
+                          console.log('Deleted user:', response.data);
+                          await fetchStudents();
+                      } catch (error) {
+                          console.error('There was a problem with the deleting:', error);
+                      }
+    };
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
 
@@ -190,10 +204,11 @@ return (
                 <button className="Authentication" onClick={handleAuth}>Authenticate</button>
                 <button className="Addition" onClick={handleAdd}>Add student</button>
                 <button className="Update" onClick={handleUpdate}>Update student</button>
+                <button className="Delete" onClick={handleDelete}>Delete student</button>
             </div>
 
             <Card>
-                <h2>Add/Update Student </h2>
+                <h2>Add/Update/Delete Student </h2>
                 <StudentForm student={student} setStudent={setStudent}/>
             </Card>
 
