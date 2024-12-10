@@ -26,6 +26,7 @@ function App() {
         dateOfBirth: '2000-03-01',
         country: '',
     });
+    const [country, setCountry] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -145,7 +146,6 @@ function App() {
     };
     const handleDelete= async () => {
                       try {
-                      console.log(`/api/v1/student/${student.id}`);
                           const response = await axios.delete(`/api/v1/student/${student.id}`, {
                               headers: {
                                   Authorization: `Bearer ${token}`
@@ -157,6 +157,22 @@ function App() {
                           console.error('There was a problem with the deleting:', error);
                       }
     };
+    const fetchCountryByStudentId = async () => {
+            try {
+                const response = await axios.get(`/api/v1/student/id/${student.id}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                      });
+                if (response.status === 200) {
+                    setCountry(response.data);
+                }
+                else {
+                    setCountry('');
+                }
+            } catch (err) {
+                console.error(error);
+                setCountry('');
+            }
+        };
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
 
@@ -205,6 +221,7 @@ return (
                 <button className="Addition" onClick={handleAdd}>Add student</button>
                 <button className="Update" onClick={handleUpdate}>Update student</button>
                 <button className="Delete" onClick={handleDelete}>Delete student</button>
+                <button className="GetCountry" onClick={fetchCountryByStudentId}>Get country for student</button>
             </div>
 
             <Card>
@@ -221,7 +238,7 @@ return (
                 </ul>
             </Card>
         </header>
-
+        {country && <p>Country: {country}</p>}
         <section className="students-list">
             <h2>Students List</h2>
             <ul>
