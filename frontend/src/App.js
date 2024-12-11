@@ -173,6 +173,30 @@ function App() {
                 setCountry('');
             }
         };
+     const handleGetStudentByEmail= async () => {
+                          try {
+                        const response = await axios.get(`/api/v1/student/${student.email}`, {
+                          headers: {
+                           Authorization: `Bearer ${token}`
+                 }
+            });
+       if(response.status == 200){
+        const updatedStudent = {
+            ...student,
+            id: response.data.id || student.id,
+            email: response.data.email || student.email,
+            lastName: response.data.lastName || student.lastName,
+            firstName: response.data.firstName || student.firstName,
+            dateOfBirth: response.data.dateOfBirth || student.dateOfBirth,
+            country: response.data.country || student.country,
+        };
+
+        setStudent(updatedStudent);
+                              }
+                          } catch (error) {
+                              console.error('There was a problem:', error);
+                          }
+        };
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
 
@@ -222,6 +246,7 @@ return (
                 <button className="Update" onClick={handleUpdate}>Update student</button>
                 <button className="Delete" onClick={handleDelete}>Delete student</button>
                 <button className="GetCountry" onClick={fetchCountryByStudentId}>Get country for student</button>
+                <button className="GetByEmail" onClick={handleGetStudentByEmail}>Get student by email</button>
             </div>
 
             <Card>
