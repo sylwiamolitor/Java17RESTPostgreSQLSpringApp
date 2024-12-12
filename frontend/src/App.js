@@ -27,6 +27,11 @@ function App() {
         country: '',
     });
     const [country, setCountry] = useState('');
+    const [subregion, setSubregion] = useState({
+            region: '',
+            subregion: ''
+        });
+    const [subregions, setSubregions] = useState([]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -157,6 +162,23 @@ function App() {
                           console.error('There was a problem with the deleting:', error);
                       }
     };
+
+    const handleGetRegionsByStudentId= async () => {
+                              try {
+                                  console.log(`/api/v1/student/regionsByCountry/${student.id}`);
+                                  console.log(`${token}`);
+                            const response = await axios.get(`/api/v1/student/regionsByCountry/${student.id}`, {
+                              headers: {
+                               Authorization: `Bearer ${token}`
+                     }
+                });
+           if(response.status === 200){
+               setSubregions(response.data.pagedContent);}
+                              } catch (error) {
+                                  console.error('There was a problem:', error);
+                              }
+            };
+
     const fetchCountryByStudentId = async () => {
             try {
                 const response = await axios.get(`/api/v1/student/id/${student.id}`, {
@@ -180,7 +202,7 @@ function App() {
                            Authorization: `Bearer ${token}`
                  }
             });
-       if(response.status == 200){
+       if(response.status === 200){
         const updatedStudent = {
             ...student,
             id: response.data.id || student.id,
@@ -247,6 +269,7 @@ return (
                 <button className="Delete" onClick={handleDelete}>Delete student</button>
                 <button className="GetCountry" onClick={fetchCountryByStudentId}>Get country for student</button>
                 <button className="GetByEmail" onClick={handleGetStudentByEmail}>Get student by email</button>
+                <button className="SubregionGet" onClick={handleGetRegionsByStudentId}>Get subregions by student id</button>
             </div>
 
             <Card>
@@ -264,6 +287,20 @@ return (
             </Card>
         </header>
         {country && <p>Country: {country}</p>}
+<section className="subregions-list">
+            <h2>Subregions List</h2>
+            <ul>
+                {subregions?.length > 0 ? (
+                    subregions.map((subregion, index) => (
+                        <li key={index} className="subregion-item">
+                            {subregion.region} {subregion.subregion}
+                        </li>
+                    ))
+                ) : (
+                    <li>No subregions available.</li>
+                )}
+            </ul>
+        </section>
         <section className="students-list">
             <h2>Students List</h2>
             <ul>
