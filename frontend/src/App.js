@@ -7,6 +7,8 @@ import AuthenticateForm from "./forms/AuthenticateForm";
 import Card from "./forms/Card";
 import RegisterForm from "./forms/RegisterForm";
 import StudentForm from "./forms/StudentForm";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
     const [students, setStudents] = useState([]);
@@ -64,6 +66,7 @@ function App() {
             }
         } catch (err) {
             setError(err);
+            toast.error(`Error fetching students: ${err.message}`);
             setStudents([]);
         } finally {
             setLoading(false);
@@ -94,13 +97,12 @@ function App() {
                 }
             );
             console.log("Registration successful:", response.data);
+            toast.success(response.data);
             setToken(response.data.token);
             setButtonText("correct registration");
         } catch (error) {
-            console.error(
-                "There was a problem with the registration operation:",
-                error
-            );
+            console.error("There was a problem with the registration operation:", error);
+            toast.error(`Registration failed: ${error.response?.data?.message || error.message}`);
         }
     };
     const handleAuth = async () => {
@@ -120,14 +122,14 @@ function App() {
             setToken(response.data.token);
             setButtonText("correct authentication");
             console.log("Authentication successful:", response.data);
+            toast.success(response.data);
             await fetchStudents();
         } catch (error) {
-            console.error(
-                "There was a problem with the authentication operation:",
-                error
-            );
+            console.error("There was a problem with the authentication operation:", error);
+            toast.error(`Authentication failed: ${error.response?.data?.message || error.message}`);
         }
     };
+
     const handleAdd = async () => {
         try {
             const response = await axios.post(
@@ -146,9 +148,11 @@ function App() {
                 }
             );
             console.log("Added user:", response.data);
+            toast.success(response.data);
             await fetchStudents();
         } catch (error) {
             console.error("There was a problem with the adding:", error);
+            toast.error(`Add student failed: ${error.response?.data?.message || error.message}`);
         }
     };
     const handleUpdate = async () => {
@@ -168,10 +172,11 @@ function App() {
                     },
                 }
             );
-            console.log("Updated user:", response.data);
+            toast.success(response.data);
             await fetchStudents();
         } catch (error) {
             console.error("There was a problem with the updating:", error);
+            toast.error(`Update student failed: ${error.response?.data?.message || error.message}`);
         }
     };
     const handleDelete = async () => {
@@ -182,9 +187,11 @@ function App() {
                 },
             });
             console.log("Deleted user:", response.data);
+            toast.success(response.data);
             await fetchStudents();
         } catch (error) {
             console.error("There was a problem with the deleting:", error);
+            toast.error(`Delete student failed: ${error.response?.data?.message || error.message}`);
         }
     };
 
@@ -205,6 +212,7 @@ function App() {
             }
         } catch (error) {
             console.error("There was a problem:", error);
+            toast.error(`Fetch regions failed: ${error.response?.data?.message || error.message}`);
         }
     };
 
@@ -219,8 +227,9 @@ function App() {
                 setCountry("");
             }
         } catch (err) {
-            console.error(error);
+            console.error(err);
             setCountry("");
+            toast.error(`Fetch country failed: ${err.message}`);
         }
     };
     const handleGetStudentByEmail = async () => {
@@ -240,11 +249,12 @@ function App() {
                     dateOfBirth: response.data.dateOfBirth || student.dateOfBirth,
                     country: response.data.country || student.country,
                 };
-
+                toast.success(response.data);
                 setStudent(updatedStudent);
             }
         } catch (error) {
             console.error("There was a problem:", error);
+            toast.error(`Fetch student by email failed: ${error.response?.data?.message || error.message}`);
         }
     };
     if (loading) return <p>Loading...</p>;
@@ -382,6 +392,7 @@ function App() {
             </section>
 
             <img src={logo} className="App-logo" alt="logo" />
+            <ToastContainer />
         </div>
     );
 }
