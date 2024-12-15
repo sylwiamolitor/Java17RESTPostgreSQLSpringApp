@@ -106,7 +106,7 @@ public class StudentController {
         if (country.isEmpty())
             return ResponseEntity.notFound().build();
 
-        String uri = "https://restcountries.com/v3.1/independent?status=true";
+        String uri = "https://restcountries.com/v3.1/name/" + country.get();
         ApiDTO[] apiObj = restTemplate.getForObject(uri, ApiDTO[].class);
         Collection<RegionAndSubregionDTO> currentRegions = studentService.mapApiToRegion(apiObj, country.get());
         List<RegionAndSubregionDTO> regionsList = new ArrayList<>(currentRegions);

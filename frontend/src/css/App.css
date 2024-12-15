@@ -48,3 +48,24 @@
   height: auto;
   max-width: 600px;
 }
+ .students-list {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+    .students-list h2 {
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .student-item {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        transition: background-color 0.3s;
+    }
+
+    .student-item:hover {
+        background-color: #f0f0f0;
+    }

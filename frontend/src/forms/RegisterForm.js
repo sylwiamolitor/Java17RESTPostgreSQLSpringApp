@@ -1,50 +1,40 @@
-import React, { useState } from 'react';
+import React from "react";
 
-const RegisterForm = () => {
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: ''
-    });
+const RegisterForm = ({ setFirstName, firstName, setLastName, lastName }) => {
+  const handleFirstNameChange = (event) => {
+    setFirstName(event.target.value);
+  };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-    };
+  const handleLastNameChange = (event) => {
+    setLastName(event.target.value);
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Form submitted:', formData);
-    };
-
-    return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>
-                    First Name:
-                    <input
-                        type="text"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange}
-                    />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Last Name:
-                    <input
-                        type="text"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
-                    />
-                </label>
-            </div>
-        </form>
-    );
+  return (
+    <form>
+      <div>
+        <label>
+          First Name:
+          <input
+            type="text"
+            name="firstName"
+            value={firstName}
+            onChange={handleFirstNameChange}
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          Last Name:
+          <input
+            type="text"
+            name="lastName"
+            value={lastName}
+            onChange={handleLastNameChange}
+          />
+        </label>
+      </div>
+    </form>
+  );
 };
 
 export default RegisterForm;
