@@ -130,70 +130,20 @@ function App() {
         }
     };
 
-    const handleAdd = async () => {
+    const handleStudentAction = async (method, url, data) => {
         try {
-            const response = await axios.post(
-                "/api/v1/student/addStudent",
-                {
-                    email: student.email,
-                    lastName: student.lastName,
-                    firstName: student.firstName,
-                    dateOfBirth: student.dateOfBirth,
-                    country: student.country,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            console.log("Added user:", response.data);
+            const response = await axios({ method, url, data, headers: { Authorization: `Bearer ${token}` } });
             toast.success(response.data);
-            await fetchStudents();
+            if (response.status !== 226 && response.status !== 404)
+                await fetchStudents();
         } catch (error) {
-            console.error("There was a problem with the adding:", error);
-            toast.error(`Add student failed: ${error.response?.data?.message || error.message}`);
+            toast.error(`${method.charAt(0).toUpperCase() + method.slice(1)} failed: ${error.response?.data?.message || error.message}`);
         }
     };
-    const handleUpdate = async () => {
-        try {
-            const response = await axios.put(
-                `/api/v1/student/${student.id}`,
-                {
-                    email: student.email,
-                    lastName: student.lastName,
-                    firstName: student.firstName,
-                    dateOfBirth: student.dateOfBirth,
-                    country: student.country,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            toast.success(response.data);
-            await fetchStudents();
-        } catch (error) {
-            console.error("There was a problem with the updating:", error);
-            toast.error(`Update student failed: ${error.response?.data?.message || error.message}`);
-        }
-    };
-    const handleDelete = async () => {
-        try {
-            const response = await axios.delete(`/api/v1/student/${student.id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            console.log("Deleted user:", response.data);
-            toast.success(response.data);
-            await fetchStudents();
-        } catch (error) {
-            console.error("There was a problem with the deleting:", error);
-            toast.error(`Delete student failed: ${error.response?.data?.message || error.message}`);
-        }
-    };
+
+    const handleDelete = () => handleStudentAction('delete', `/api/v1/student/${student.id}`);
+    const handleAdd = () => handleStudentAction('post', '/api/v1/student/addStudent', student);
+    const handleUpdate = () => handleStudentAction('put', `/api/v1/student/${student.id}`, student);
 
     const handleGetRegionsByStudentId = async () => {
         try {
