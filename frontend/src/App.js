@@ -102,7 +102,7 @@ function App() {
             setButtonText("correct registration");
         } catch (error) {
             console.error("There was a problem with the registration operation:", error);
-            toast.error(`Registration failed: ${error.response?.data?.message || error.message}`);
+            toast.error(`Registration failed: ${error.response?.data || error.message}`);
         }
     };
     const handleAuth = async () => {
@@ -126,7 +126,7 @@ function App() {
             await fetchStudents();
         } catch (error) {
             console.error("There was a problem with the authentication operation:", error);
-            toast.error(`Authentication failed: ${error.response?.data?.message || error.message}`);
+            toast.error(`Authentication failed: ${error.response?.data || error.message}`);
         }
     };
 
@@ -137,7 +137,8 @@ function App() {
             if (response.status !== 226 && response.status !== 404)
                 await fetchStudents();
         } catch (error) {
-            toast.error(`${method.charAt(0).toUpperCase() + method.slice(1)} failed: ${error.response?.data?.message || error.message}`);
+            const errorMessage = error.response?.data || error.message || "An unknown error occurred";
+            toast.error(`${method.charAt(0).toUpperCase() + method.slice(1)} failed: ${errorMessage}`);
         }
     };
 
@@ -162,7 +163,7 @@ function App() {
             }
         } catch (error) {
             console.error("There was a problem:", error);
-            toast.error(`Fetch regions failed: ${error.response?.data?.message || error.message}`);
+            toast.error(`Fetch regions failed: ${error.response?.data || error.message}`);
         }
     };
 
@@ -204,7 +205,7 @@ function App() {
             }
         } catch (error) {
             console.error("There was a problem:", error);
-            toast.error(`Fetch student by email failed: ${error.response?.data?.message || error.message}`);
+            toast.error(`Fetch student by email failed: ${error.response?.data || error.message}`);
         }
     };
     if (loading) return <p>Loading...</p>;
