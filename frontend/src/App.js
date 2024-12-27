@@ -7,8 +7,8 @@ import AuthenticateForm from "./forms/AuthenticateForm";
 import Card from "./forms/Card";
 import RegisterForm from "./forms/RegisterForm";
 import StudentForm from "./forms/StudentForm";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
     const [students, setStudents] = useState([]);
@@ -82,31 +82,46 @@ function App() {
     }, []);
     const handleRegister = async () => {
         try {
-            const response = await axios.post(
-                "/api/v1/auth/register",
-                {
-                    firstName: firstName,
-                    lastName: lastName,
-                    email: email,
-                    password: password,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+            if (!firstName || !lastName) {
+                toast.warning("Please fill in first name and last name!");
+                return;
+            }
+            if (!email || !password) {
+                toast.warning("Please fill in email and password!");
+                return;
+            }
+            const response = await axios.post("/api/v1/auth/register", {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: password,
+            });
             console.log("Registration successful:", response.data);
             toast.success(response.data);
             setToken(response.data.token);
             setButtonText("correct registration");
         } catch (error) {
-            console.error("There was a problem with the registration operation:", error);
-            toast.error(`Registration failed: ${error.response?.data || error.message}`);
+            console.error(
+                "There was a problem with the registration operation:",
+                error
+            );
+            toast.error(
+                `Registration failed: ${error.response?.data || error.message}`
+            );
         }
     };
     const handleAuth = async () => {
         try {
+            if (!email || !password) {
+                toast.warning("Please fill in email and password!");
+                return;
+            }
+            if (!token) {
+                toast.warning(
+                    "Please fill in token or register and authenticate to generate token!"
+                );
+                return;
+            }
             const response = await axios.post(
                 "/api/v1/auth/authenticate",
                 {
@@ -125,31 +140,93 @@ function App() {
             toast.success(response.data);
             await fetchStudents();
         } catch (error) {
-            console.error("There was a problem with the authentication operation:", error);
-            toast.error(`Authentication failed: ${error.response?.data || error.message}`);
+            console.error(
+                "There was a problem with the authentication operation:",
+                error
+            );
+            toast.error(
+                `Authentication failed: ${error.response?.data || error.message}`
+            );
         }
     };
 
     const handleStudentAction = async (method, url, data) => {
         try {
-            const response = await axios({ method, url, data, headers: { Authorization: `Bearer ${token}` } });
+            if (!token) {
+                toast.warning(
+                    "Please fill in token or register and authenticate to generate token!"
+                );
+                return;
+            }
+            const response = await axios({
+                method,
+                url,
+                data,
+                headers: { Authorization: `Bearer ${token}` },
+            });
             toast.success(response.data);
             if (response.status !== 226 && response.status !== 404)
                 await fetchStudents();
         } catch (error) {
-            const errorMessage = error.response?.data || error.message || "An unknown error occurred";
-            toast.error(`${method.charAt(0).toUpperCase() + method.slice(1)} failed: ${errorMessage}`);
+            const errorMessage =
+                error.response?.data || error.message || "An unknown error occurred";
+            toast.error(
+                `${
+                    method.charAt(0).toUpperCase() + method.slice(1)
+                } failed: ${errorMessage}`
+            );
         }
     };
+    const handleDelete = () => {
+        if (!student.id) {
+            toast.warning("Student ID is required for deletion!");
+            return;
+        }
+        handleStudentAction("delete", `/api/v1/student/${student.id}`);
+    };
 
-    const handleDelete = () => handleStudentAction('delete', `/api/v1/student/${student.id}`);
-    const handleAdd = () => handleStudentAction('post', '/api/v1/student/addStudent', student);
-    const handleUpdate = () => handleStudentAction('put', `/api/v1/student/${student.id}`, student);
+    const handleAdd = () => {
+        if (
+            !student.firstName ||
+            !student.lastName ||
+            !student.email ||
+            !student.dateOfBirth
+        ) {
+            toast.warning("Student data is required to update the student!");
+            return;
+        }
+        handleStudentAction("post", "/api/v1/student/addStudent", student);
+    };
+
+    const handleUpdate = () => {
+        if (!student.id) {
+            toast.warning("Student ID is required for updating!");
+            return;
+        }
+        if (
+            !student.firstName ||
+            !student.lastName ||
+            !student.email ||
+            !student.dateOfBirth
+        ) {
+            toast.warning("Student data is required to update the student!");
+            return;
+        }
+        handleStudentAction("put", `/api/v1/student/${student.id}`, student);
+    };
 
     const handleGetRegionsByStudentId = async () => {
         try {
-            console.log(`/api/v1/student/regionsByCountry/${student.id}`);
-            console.log(`${token}`);
+            if (!token) {
+                toast.warning(
+                    "Please fill in token or register and authenticate to generate token!"
+                );
+                return;
+            }
+            if (!student.id) {
+                toast.warning("Please fill in student id!");
+                return;
+            }
             const response = await axios.get(
                 `/api/v1/student/regionsByCountry/${student.id}`,
                 {
@@ -163,12 +240,24 @@ function App() {
             }
         } catch (error) {
             console.error("There was a problem:", error);
-            toast.error(`Fetch regions failed: ${error.response?.data || error.message}`);
+            toast.error(
+                `Fetch regions failed: ${error.response?.data || error.message}`
+            );
         }
     };
 
     const fetchCountryByStudentId = async () => {
         try {
+            if (!token) {
+                toast.warning(
+                    "Please fill in token or register and authenticate to generate token!"
+                );
+                return;
+            }
+            if (!student.id) {
+                toast.warning("Please fill in student id!");
+                return;
+            }
             const response = await axios.get(`/api/v1/student/id/${student.id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
@@ -185,6 +274,16 @@ function App() {
     };
     const handleGetStudentByEmail = async () => {
         try {
+            if (!token) {
+                toast.warning(
+                    "Please fill in token or register and authenticate to generate token!"
+                );
+                return;
+            }
+            if (!student.email) {
+                toast.warning("Please fill in student email!");
+                return;
+            }
             const response = await axios.get(`/api/v1/student/${student.email}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -205,7 +304,11 @@ function App() {
             }
         } catch (error) {
             console.error("There was a problem:", error);
-            toast.error(`Fetch student by email failed: ${error.response?.data || error.message}`);
+            toast.error(
+                `Fetch student by email failed: ${
+                    error.response?.data || error.message
+                }`
+            );
         }
     };
     if (loading) return <p>Loading...</p>;
@@ -220,14 +323,12 @@ function App() {
                 <h1>Students App</h1>
                 <p>Quick Instructions:</p>
                 <ul>
-                    <li>Register using token, e-mail address, and password.</li>
+                    <li>Register using e-mail address, first name, last name and password.</li>
                     <li>
-                        Authorize using token, e-mail address, password, first name, and
-                        last name.
+                        Authorize using token, e-mail address and password.
                     </li>
                     <li>
-                        Enter the token from the authorization and have fun using the
-                        application's functionalities :)
+                        Have fun using the application's functionalities :)
                     </li>
                 </ul>
 
