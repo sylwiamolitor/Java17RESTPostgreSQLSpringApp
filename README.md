@@ -42,10 +42,7 @@ Database credentials are needed for the application to function. Secret key is n
 Start the application.
 The operating port is 8090.
 To start the application use command `docker compose up`.
-A JWT token is needed to register user and authorize requests. Create JWT token for example at
-https://jwt.io/ and add it to header in `register` endpoint. ![img_3.png](img_3.png) JWT token has specific syntax - subject is email. ![img_4.png](img_4.png) Create user with correct email.
-![img_2.png](img_2.png)
-Created token will be used in requests or to authenticate user in `authenticate` endpoint.
+A JWT token is needed to authorize requests. Token created after in `register` endpoint will be used in requests or to authenticate user in `authenticate` endpoint.
 
 ## Usage
 Tool Postman or OpenAPI are recommended. The available options are:
