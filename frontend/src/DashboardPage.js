@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import StudentForm from "./forms/StudentForm";
 import Card from "./forms/Card";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import studentsPic from "./studentsPic.jpg";
 import "./css/App.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,6 +14,7 @@ const DashboardPage = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const { token: initialToken } = location.state || {};
+    const navigate = useNavigate();
     const [student, setStudent] = useState({
         id: "",
         email: "",
@@ -212,6 +213,9 @@ const DashboardPage = () => {
             );
         }
     };
+    const handleLogout = () => {
+        navigate("/");
+    };
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
     return (
@@ -238,6 +242,9 @@ const DashboardPage = () => {
                 </button>
                 <button className="SubregionGet" onClick={handleGetRegionsByStudentId}>
                     Get subregions by student id
+                </button>
+                <button className="Logout" onClick={handleLogout}>
+                    Logout
                 </button>
             </div>
             <Card>
