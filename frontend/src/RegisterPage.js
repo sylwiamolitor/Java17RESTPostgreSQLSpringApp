@@ -32,7 +32,7 @@ const RegisterPage = () => {
       console.log("Registration successful:", response.data);
       toast.success("Registration successful!");
       const token = response.data.token;
-      navigate("/authenticate", { state: { token } });
+      navigate("/dashboard", { state: { token } });
     } catch (error) {
       console.error(
           "There was a problem with the registration operation:",
