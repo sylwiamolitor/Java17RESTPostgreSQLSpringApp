@@ -10,6 +10,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Pattern;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -20,6 +22,12 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
+        var existingUser = repository.findByEmail(request.getEmail());
+        if (existingUser.isPresent()) {
+            throw new IllegalStateException("Email taken");
+        }
+        checkIfEmailValid(request.getEmail());
+
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -43,5 +51,14 @@ public class AuthenticationService {
         user.clearSensitive();
         return AuthenticationResponse.builder().token(jwtToken).build();
 
+    }
+
+    private void checkIfEmailValid(String email) {
+        String regex = "^(.+)@(.+)$";
+
+        Pattern pattern = Pattern.compile(regex);
+        if (!pattern.matcher(email).matches()) {
+            throw new IllegalArgumentException("Email not valid");
+        }
     }
 }
