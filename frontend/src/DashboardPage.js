@@ -35,7 +35,7 @@ const DashboardPage = () => {
         try {
             if (initialToken !== "") {
                 const response = await axios.get(
-                    "http://localhost:8090/api/v1/student",
+                    `api/v1/student`,
                     {
                         headers: {
                             Authorization: `Bearer ${initialToken}`,

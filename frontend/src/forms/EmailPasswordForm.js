@@ -24,7 +24,6 @@ const EmailPasswordForm = ({ setEmail, setPassword, email, password }) => {
               id="email"
               value={email}
               onChange={handleEmailChange}
-              required
               placeholder="Enter your email"
           />
         </div>
@@ -35,7 +34,6 @@ const EmailPasswordForm = ({ setEmail, setPassword, email, password }) => {
               id="password"
               value={password}
               onChange={handlePasswordChange}
-              required
               placeholder="Enter your password"
           />
           <button type="button" onClick={togglePasswordVisibility}>

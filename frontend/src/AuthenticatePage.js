@@ -3,18 +3,14 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import EmailPasswordForm from "./forms/EmailPasswordForm";
 import Card from "./forms/Card";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./css/App.css";
 import "react-toastify/dist/ReactToastify.css";
 
 const AuthenticatePage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const location = useLocation();
-    const { token: initialToken } = location.state || {};
     const navigate = useNavigate();
-    const isEmpty = (value) =>
-        value === undefined || value === null || value === "";
 
     const handleAuth = async () => {
         try {
@@ -22,20 +18,11 @@ const AuthenticatePage = () => {
                 toast.warning("Please fill in email and password!");
                 return;
             }
-            if (isEmpty(initialToken)) {
-                toast.warning("Please register to generate token!");
-                return;
-            }
             const response = await axios.post(
                 "/api/v1/auth/authenticate",
                 {
                     email: email,
                     password: password,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${initialToken}`,
-                    },
                 }
             );
             console.log("Authentication successful:", response.data);
@@ -55,6 +42,9 @@ const AuthenticatePage = () => {
             );
         }
     };
+    const handleLogout = () => {
+        navigate("/");
+    };
 
     return (
         <div>
@@ -67,8 +57,11 @@ const AuthenticatePage = () => {
                     password={password}
                 />
                 <button onClick={handleAuth}>Authenticate</button>
+                <button className="Logout" onClick={handleLogout}>
+                    Back
+                </button>
             </Card>
-            <ToastContainer />
+            <ToastContainer/>
         </div>
     );
 };

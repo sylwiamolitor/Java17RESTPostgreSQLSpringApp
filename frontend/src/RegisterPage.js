@@ -43,9 +43,12 @@ const RegisterPage = () => {
       );
     }
   };
+  const handleLogout = () => {
+    navigate("/");
+  };
 
   return (
-      <form>
+      <form onSubmit={handleRegister}>
         <Card>
           <h2>Register</h2>
           <div>
@@ -56,6 +59,7 @@ const RegisterPage = () => {
                   name="firstName"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="Enter your first name"
               />
             </label>
           </div>
@@ -67,6 +71,7 @@ const RegisterPage = () => {
                   name="lastName"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Enter your last name"
               />
             </label>
           </div>
@@ -76,11 +81,14 @@ const RegisterPage = () => {
               password={password}
               email={email}
           />
-          <button className="Register" onClick={handleRegister}>
+          <button className="Register" type="submit">
             Register
           </button>
+          <button className="Logout" onClick={handleLogout}>
+            Back
+          </button>
         </Card>
-        <ToastContainer />
+        <ToastContainer/>
       </form>
   );
 };
