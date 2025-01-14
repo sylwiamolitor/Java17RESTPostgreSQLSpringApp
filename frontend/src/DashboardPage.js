@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import studentsPic from "./studentsPic.jpg";
 import "./css/App.css";
 import "react-toastify/dist/ReactToastify.css";
+import { Popup } from './Popup';
 
 const DashboardPage = () => {
     const location = useLocation();
@@ -29,6 +30,8 @@ const DashboardPage = () => {
         subregion: "",
     });
     const [subregions, setSubregions] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [popupText, setPopupText] = useState('');
 
     const fetchStudents = async () => {
         setLoading(true);
@@ -203,6 +206,14 @@ const DashboardPage = () => {
                 };
                 toast.success(response.data);
                 setStudent(updatedStudent);
+                setOpen(true);
+                setPopupText(
+                    'Email: ' + updatedStudent.email + '\n' +
+                    'First Name: ' + updatedStudent.firstName + '\n' +
+                    'Last Name: ' + updatedStudent.lastName + '\n' +
+                    'Date of Birth: ' + updatedStudent.dateOfBirth + '\n' +
+                    'Country: ' + updatedStudent.country
+                );
             }
         } catch (error) {
             console.error("There was a problem:", error);
@@ -220,6 +231,9 @@ const DashboardPage = () => {
     if (error) return <p>Error: {error.message}</p>;
     return (
         <div>
+            <div>
+                {open ? <Popup text={popupText} closePopup={() => setOpen(false)} /> : null}
+            </div>
             <div className="image-container">
                 <img src={studentsPic} alt="Students" className="scaled-image" />
             </div>
