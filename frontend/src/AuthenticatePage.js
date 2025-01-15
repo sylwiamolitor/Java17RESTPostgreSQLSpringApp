@@ -6,6 +6,7 @@ import Card from "./forms/Card";
 import { useNavigate } from "react-router-dom";
 import "./css/App.css";
 import "react-toastify/dist/ReactToastify.css";
+import "./css/Button.css";
 
 const AuthenticatePage = () => {
     const [email, setEmail] = useState("");
@@ -56,8 +57,8 @@ const AuthenticatePage = () => {
                     email={email}
                     password={password}
                 />
-                <button onClick={handleAuth}>Authenticate</button>
-                <button className="Logout" onClick={handleLogout}>
+                <button className="pretty-button" onClick={handleAuth}>Authenticate</button>
+                <button className="pretty-button" onClick={handleLogout}>
                     Back
                 </button>
             </Card>

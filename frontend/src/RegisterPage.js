@@ -6,6 +6,7 @@ import EmailPasswordForm from "./forms/EmailPasswordForm";
 import Card from "./forms/Card";
 import "react-toastify/dist/ReactToastify.css";
 import "./css/App.css";
+import "./css/Button.css";
 
 const RegisterPage = () => {
   const [firstName, setFirstName] = useState("");
@@ -81,10 +82,10 @@ const RegisterPage = () => {
               password={password}
               email={email}
           />
-          <button className="Register" type="submit">
+          <button className="pretty-button" type="submit">
             Register
           </button>
-          <button className="Logout" onClick={handleLogout}>
+          <button className="pretty-button" onClick={handleLogout}>
             Back
           </button>
         </Card>

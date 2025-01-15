@@ -10,7 +10,7 @@ export const Popup = ({ text, closePopup }) => {
             </span>
           ))}
         </h1>
-        <button onClick={closePopup}>Close X</button>
+        <button className="pretty-button" onClick={closePopup}>Close X</button>
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 const EmailPasswordForm = ({ setEmail, setPassword, email, password }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -36,7 +35,7 @@ const EmailPasswordForm = ({ setEmail, setPassword, email, password }) => {
               onChange={handlePasswordChange}
               placeholder="Enter your password"
           />
-          <button type="button" onClick={togglePasswordVisibility}>
+          <button className="pretty-button" type="button" onClick={togglePasswordVisibility}>
             {showPassword ? "Hide" : "Show"} Password
           </button>
         </div>

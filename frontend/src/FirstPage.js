@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "./forms/Card";
 import "./css/App.css";
+import "./css/Button.css";
 
 const FirstPage = () => {
     const navigate = useNavigate();
@@ -18,10 +19,10 @@ const FirstPage = () => {
     return (
         <form>
             <Card>
-                <button className="Register" onClick={handleRegister}>
+                <button className="pretty-button" onClick={handleRegister}>
                     Register
                 </button>
-                <button className="Authenticate" onClick={handleAuth}>
+                <button className="pretty-button" onClick={handleAuth}>
                     Authenticate
                 </button>
             </Card>
