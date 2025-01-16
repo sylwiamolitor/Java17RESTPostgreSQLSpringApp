@@ -18,7 +18,7 @@ const EmailPasswordForm = ({ setEmail, setPassword, email, password }) => {
       <>
         <div>
           <label htmlFor="email">Email:</label>
-          <input
+          <input className="input-field"
               type="email"
               id="email"
               value={email}
@@ -28,7 +28,7 @@ const EmailPasswordForm = ({ setEmail, setPassword, email, password }) => {
         </div>
         <div>
           <label htmlFor="password">Password:</label>
-          <input
+          <input className="input-field"
               type={showPassword ? "text" : "password"}
               id="password"
               value={password}

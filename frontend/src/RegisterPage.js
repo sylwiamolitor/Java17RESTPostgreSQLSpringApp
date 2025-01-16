@@ -7,6 +7,7 @@ import Card from "./forms/Card";
 import "react-toastify/dist/ReactToastify.css";
 import "./css/App.css";
 import "./css/Button.css";
+import "./css/Input.css";
 
 const RegisterPage = () => {
   const [firstName, setFirstName] = useState("");
@@ -55,7 +56,7 @@ const RegisterPage = () => {
           <div>
             <label>
               First Name:
-              <input
+              <input className="input-field"
                   type="text"
                   name="firstName"
                   value={firstName}
@@ -67,7 +68,7 @@ const RegisterPage = () => {
           <div>
             <label>
               Last Name:
-              <input
+              <input className="input-field"
                   type="text"
                   name="lastName"
                   value={lastName}

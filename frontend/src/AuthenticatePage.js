@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import "./css/App.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./css/Button.css";
+import "./css/Input.css";
 
 const AuthenticatePage = () => {
     const [email, setEmail] = useState("");

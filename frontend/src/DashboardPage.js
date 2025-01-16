@@ -9,6 +9,7 @@ import "./css/App.css";
 import "react-toastify/dist/ReactToastify.css";
 import { Popup } from './forms/Popup';
 import "./css/Button.css";
+import "./css/Input.css";
 
 const DashboardPage = () => {
     const location = useLocation();

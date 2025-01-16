@@ -12,7 +12,7 @@ const StudentForm = ({ student, setStudent }) => {
         <div>
           <label>
             Id:
-            <input
+            <input className="input-field"
               type="number"
               name="id"
               value={student.id}
@@ -23,7 +23,7 @@ const StudentForm = ({ student, setStudent }) => {
         <div>
           <label>
             First Name:
-            <input
+            <input className="input-field"
               type="text"
               name="firstName"
               value={student.firstName}
@@ -34,7 +34,7 @@ const StudentForm = ({ student, setStudent }) => {
         <div>
           <label>
             Last Name:
-            <input
+            <input className="input-field"
               type="text"
               name="lastName"
               value={student.lastName}
@@ -45,7 +45,7 @@ const StudentForm = ({ student, setStudent }) => {
         <div>
           <label>
             Email:
-            <input
+            <input className="input-field"
               type="email"
               name="email"
               value={student.email}
@@ -56,7 +56,7 @@ const StudentForm = ({ student, setStudent }) => {
         <div>
           <label>
             Date of Birth:
-            <input
+            <input className="input-field"
               type="date"
               name="dateOfBirth"
               value={student.dateOfBirth}
@@ -67,7 +67,7 @@ const StudentForm = ({ student, setStudent }) => {
         <div>
           <label>
             Country:
-            <input
+            <input className="input-field"
               type="text"
               name="country"
               value={student.country}
