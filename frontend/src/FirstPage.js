@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Card from "./forms/Card";
 import "./css/App.css";
 import "./css/Button.css";
+import "./css/Card.css";
 
 const FirstPage = () => {
     const navigate = useNavigate();

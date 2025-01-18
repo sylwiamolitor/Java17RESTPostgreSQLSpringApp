@@ -8,6 +8,7 @@ import "./css/App.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./css/Button.css";
 import "./css/Input.css";
+import "./css/Card.css";
 
 const AuthenticatePage = () => {
     const [email, setEmail] = useState("");

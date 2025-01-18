@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Popup } from './forms/Popup';
 import "./css/Button.css";
 import "./css/Input.css";
+import "./css/Card.css";
 
 const DashboardPage = () => {
     const location = useLocation();

@@ -54,7 +54,7 @@ const RegisterPage = () => {
         <Card>
           <h2>Register</h2>
           <div>
-            <label>
+            <label className="full-width-label">
               First Name:
               <input className="input-field"
                   type="text"
@@ -66,7 +66,7 @@ const RegisterPage = () => {
             </label>
           </div>
           <div>
-            <label>
+            <label className="full-width-label">
               Last Name:
               <input className="input-field"
                   type="text"
