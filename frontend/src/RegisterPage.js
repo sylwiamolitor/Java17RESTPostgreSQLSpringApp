@@ -6,6 +6,8 @@ import EmailPasswordForm from "./forms/EmailPasswordForm";
 import Card from "./forms/Card";
 import "react-toastify/dist/ReactToastify.css";
 import "./css/App.css";
+import "./css/Button.css";
+import "./css/Input.css";
 
 const RegisterPage = () => {
   const [firstName, setFirstName] = useState("");
@@ -52,9 +54,9 @@ const RegisterPage = () => {
         <Card>
           <h2>Register</h2>
           <div>
-            <label>
+            <label className="full-width-label">
               First Name:
-              <input
+              <input className="input-field"
                   type="text"
                   name="firstName"
                   value={firstName}
@@ -64,9 +66,9 @@ const RegisterPage = () => {
             </label>
           </div>
           <div>
-            <label>
+            <label className="full-width-label">
               Last Name:
-              <input
+              <input className="input-field"
                   type="text"
                   name="lastName"
                   value={lastName}
@@ -81,10 +83,10 @@ const RegisterPage = () => {
               password={password}
               email={email}
           />
-          <button className="Register" type="submit">
+          <button className="pretty-button" type="submit">
             Register
           </button>
-          <button className="Logout" onClick={handleLogout}>
+          <button className="pretty-button" onClick={handleLogout}>
             Back
           </button>
         </Card>

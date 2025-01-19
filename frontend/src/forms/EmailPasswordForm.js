@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 const EmailPasswordForm = ({ setEmail, setPassword, email, password }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -19,7 +18,7 @@ const EmailPasswordForm = ({ setEmail, setPassword, email, password }) => {
       <>
         <div>
           <label htmlFor="email">Email:</label>
-          <input
+          <input className="input-field"
               type="email"
               id="email"
               value={email}
@@ -29,14 +28,14 @@ const EmailPasswordForm = ({ setEmail, setPassword, email, password }) => {
         </div>
         <div>
           <label htmlFor="password">Password:</label>
-          <input
+          <input className="input-field"
               type={showPassword ? "text" : "password"}
               id="password"
               value={password}
               onChange={handlePasswordChange}
               placeholder="Enter your password"
           />
-          <button type="button" onClick={togglePasswordVisibility}>
+          <button className="pretty-button" type="button" onClick={togglePasswordVisibility}>
             {showPassword ? "Hide" : "Show"} Password
           </button>
         </div>

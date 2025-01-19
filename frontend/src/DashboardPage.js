@@ -7,6 +7,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import studentsPic from "./studentsPic.jpg";
 import "./css/App.css";
 import "react-toastify/dist/ReactToastify.css";
+import { Popup } from './forms/Popup';
+import "./css/Button.css";
+import "./css/Input.css";
+import "./css/Card.css";
 
 const DashboardPage = () => {
     const location = useLocation();
@@ -29,6 +33,8 @@ const DashboardPage = () => {
         subregion: "",
     });
     const [subregions, setSubregions] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [popupText, setPopupText] = useState('');
 
     const fetchStudents = async () => {
         setLoading(true);
@@ -166,9 +172,8 @@ const DashboardPage = () => {
                 headers: { Authorization: `Bearer ${initialToken}` },
             });
             if (response.status === 200) {
-                setCountry(response.data);
-            } else {
-                setCountry("");
+                setOpen(true);
+                setPopupText("Country: " + response.data);
             }
         } catch (err) {
             console.error(err);
@@ -203,6 +208,14 @@ const DashboardPage = () => {
                 };
                 toast.success(response.data);
                 setStudent(updatedStudent);
+                setOpen(true);
+                setPopupText(
+                    'Email: ' + updatedStudent.email + '\n' +
+                    'First Name: ' + updatedStudent.firstName + '\n' +
+                    'Last Name: ' + updatedStudent.lastName + '\n' +
+                    'Date of Birth: ' + updatedStudent.dateOfBirth + '\n' +
+                    'Country: ' + updatedStudent.country
+                );
             }
         } catch (error) {
             console.error("There was a problem:", error);
@@ -220,30 +233,33 @@ const DashboardPage = () => {
     if (error) return <p>Error: {error.message}</p>;
     return (
         <div>
+            <div>
+                {open ? <Popup text={popupText} closePopup={() => setOpen(false)} /> : null}
+            </div>
             <div className="image-container">
                 <img src={studentsPic} alt="Students" className="scaled-image" />
             </div>
             <h2>Students Dashboard</h2>
             <div className="buttons-container">
-                <button className="Addition" onClick={handleAdd}>
+                <button className="pretty-button" onClick={handleAdd}>
                     Add student
                 </button>
-                <button className="Update" onClick={handleUpdate}>
+                <button className="pretty-button" onClick={handleUpdate}>
                     Update student
                 </button>
-                <button className="Delete" onClick={handleDelete}>
+                <button className="pretty-button" onClick={handleDelete}>
                     Delete student
                 </button>
-                <button className="GetCountry" onClick={fetchCountryByStudentId}>
+                <button className="pretty-button" onClick={fetchCountryByStudentId}>
                     Get country for student
                 </button>
-                <button className="GetByEmail" onClick={handleGetStudentByEmail}>
+                <button className="pretty-button" onClick={handleGetStudentByEmail}>
                     Get student by email
                 </button>
-                <button className="SubregionGet" onClick={handleGetRegionsByStudentId}>
+                <button className="pretty-button" onClick={handleGetRegionsByStudentId}>
                     Get subregions by student id
                 </button>
-                <button className="Logout" onClick={handleLogout}>
+                <button className="pretty-button" onClick={handleLogout}>
                     Logout
                 </button>
             </div>
@@ -251,22 +267,13 @@ const DashboardPage = () => {
                 <h2>Add/Update/Delete Student </h2>
                 <StudentForm student={student} setStudent={setStudent} />
             </Card>
-
             <Card>
-                <h2>Student Operations</h2>
-                <ul>
-                    <li>Get student by email</li>
-                    <li>Delete student by ID</li>
-                    <li>Get regions by student ID</li>
-                </ul>
-            </Card>
-            {country && <p>Country: {country}</p>}
-            <section className="subregions-list">
+            <section className="custom-list">
                 <h2>Subregions List</h2>
                 <ul>
                     {subregions?.length > 0 ? (
                         subregions.map((subregion, index) => (
-                            <li key={index} className="subregion-item">
+                            <li key={index} className="custom-item">
                                 {subregion.region} {subregion.subregion}
                             </li>
                         ))
@@ -275,12 +282,14 @@ const DashboardPage = () => {
                     )}
                 </ul>
             </section>
-            <section className="students-list">
+            </Card>
+            <Card>
+            <section className="custom-list">
                 <h2>Students List</h2>
                 <ul>
                     {students?.length > 0 ? (
                         students.map((student, index) => (
-                            <li key={index} className="student-item">
+                            <li key={index} className="custom-item">
                                 {student.firstName} {student.lastName}
                             </li>
                         ))
@@ -289,7 +298,7 @@ const DashboardPage = () => {
                     )}
                 </ul>
             </section>
-
+            </Card>
             <ToastContainer />
         </div>
     );
